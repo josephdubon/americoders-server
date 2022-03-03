@@ -1,0 +1,17 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server side for the Americoders project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "education",
+    "e-learning",
+    "lms",
+    "americoders"
+  ],
+  "author": "Joseph Dubon",
+  "license": "ISC"
+}
