@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const {readdirSync} = require('fs')
 const port = process.env.PORT || 8000
 require('dotenv').config()
 
@@ -12,9 +13,10 @@ app.use(cors())
 app.use(express.json())
 app.use(morgan('dev'))
 
-// routes config
-app.get('/', (req, res) => {
-    res.send('You hit the Americoders server endpoint!')
+// routes config - use filesystem to generate list of routes from our /routes/ dir
+readdirSync('./routes').map((r) => {
+    // prefix all routes with /api/
+    app.use('/api', require(`./routes/${r}`))
 })
 
 // port config
