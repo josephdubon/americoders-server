@@ -3,7 +3,9 @@ const cors = require('cors')
 const morgan = require('morgan')
 const {readdirSync} = require('fs')
 const port = process.env.PORT || 8000
+
 require('dotenv').config()
+
 
 // express config
 const app = express()
