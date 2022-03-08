@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
+const mongoose = require('mongoose')
 const {readdirSync} = require('fs')
 const port = process.env.PORT || 8000
 
@@ -9,6 +10,11 @@ require('dotenv').config()
 
 // express config
 const app = express()
+
+// database config
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('MongoDB Connected!'))
+    .catch((err) => console.log('MongoDB Connection Error => ', err))
 
 // middleware - will run before any response is sent back to client
 app.use(cors())
