@@ -1,9 +1,10 @@
 const express = require('express')
 const router = express.Router()
 
-// Register
-router.get('/register', (req, res) => {
-    res.send('Register user')
-})
+// controllers
+import {register} from '../controllers/auth'
+
+// register
+router.get('/register', register)
 
 module.exports = router
