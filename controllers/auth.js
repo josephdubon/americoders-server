@@ -1,6 +1,6 @@
 const {User} = require('../models/user')
-
-const {hashPassword} = require('../utils/auth')
+const {comparePassword, hashPassword} = require('../utils/auth')
+const jwt = require('jsonwebtoken')
 
 export const register = async (req, res) => {
     try {
