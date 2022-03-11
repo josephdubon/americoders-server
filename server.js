@@ -35,6 +35,16 @@ readdirSync('./routes').map((r) => {
     app.use('/api', require(`./routes/${r}`))
 })
 
+// csrf config
+app.use(csrfProtection)
+app.get('/api/csrf-token', (req, res) => {
+    res.json({
+        csrfToken: req.csrfToken()
+    })
+})
+
+
+
 // port config
 app.listen(port, () => {
     console.log(`Americoders server running on port: ${port}`)
