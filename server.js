@@ -15,7 +15,6 @@ const csrfProtection = csrf({
 
 require('dotenv').config()
 
-
 // express config
 const app = express()
 
