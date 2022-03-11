@@ -73,3 +73,15 @@ export const login = async (req, res) => {
         return res.status(400)
     }
 }
+
+export const logout = async (req, res) => {
+    try {
+        // clear cookie
+        res.clearCookie('token')
+        return res.json({
+            message: 'Successfully logged out.'
+        })
+    } catch (err) {
+        console.log('ERROR', err)
+    }
+}
