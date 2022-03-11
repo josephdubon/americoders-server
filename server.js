@@ -8,6 +8,11 @@ const {readdirSync} = require('fs')
 
 const port = process.env.PORT || 8000
 
+// initiate csrf protection
+const csrfProtection = csrf({
+    cookie: true
+})
+
 require('dotenv').config()
 
 
