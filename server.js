@@ -26,6 +26,7 @@ mongoose.connect(process.env.MONGO_URI)
 // middleware - will run before any response is sent back to client
 app.use(cors())
 app.use(express.json())
+app.use(cookieParser())
 app.use(morgan('dev'))
 
 // routes config - use filesystem to generate list of routes from our /routes/ dir
