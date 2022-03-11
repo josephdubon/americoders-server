@@ -2,6 +2,8 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const mongoose = require('mongoose')
+const csrf = require('csurf')
+const cookieParser = require('cookie-parser')
 const {readdirSync} = require('fs')
 const port = process.env.PORT || 8000
 
