@@ -1,6 +1,6 @@
-const {User} = require('../models/user')
-const {comparePassword, hashPassword} = require('../utils/auth')
-const jwt = require('jsonwebtoken')
+import User from '../models/user'
+import {comparePassword, hashPassword} from '../utils/auth'
+import jwt from 'jsonwebtoken'
 
 export const register = async (req, res) => {
     try {
