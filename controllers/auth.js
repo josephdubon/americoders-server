@@ -70,7 +70,7 @@ export const login = async (req, res) => {
         res.json(user)
     } catch (err) {
         console.log(err)
-        return res.status(400)
+        return res.status(400).send('Error. Try again.')
     }
 }
 
