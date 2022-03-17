@@ -106,3 +106,48 @@ export const currentUser = async (req, res) => {
         console.log(err)
     }
 }
+
+export const sendTestEmail = async (req, res) => {
+    // console.log('send email using SES')
+    // return res.json({ok: true})
+    const params = {
+        Source: process.env.EMAIL_SEND,
+        Destination: {
+            ToAddresses: [process.env.EMAIL_RECIEVE], // this must be an array
+        },
+        ReplyToAddresses: [process.env.EMAIL_REPLY], // this must be an array
+        // email template config for email password reset
+        Message: {
+            Body: {
+                Html: {
+                    Charset: 'UTF-8',
+                    Data: `
+                    <html lang="en">
+                        <h1>Americoders</h1>
+                        <h2>Reset Password</h2>
+                        <p>Hello friend,<br><br>
+                        It looks like you requested a password reset.<br>
+                        Please use the following link to reset your password.</p>
+                    </html>
+                    `,
+                },
+            },
+            Subject: {
+                Charset: 'UTF-8',
+                Data: 'RE: Your requested account password reset link...',
+            },
+        },
+    }
+
+    const emailSent = SES.sendEmail(params).promise()
+
+    emailSent
+        .then((data) => {
+            console.log(data)
+            res.json({ok: true})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+}
