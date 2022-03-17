@@ -1,6 +1,18 @@
 import User from '../models/user'
 import {comparePassword, hashPassword} from '../utils/auth'
 import jwt from 'jsonwebtoken'
+import AWS from 'aws-sdk'
+
+
+// AWS SES Config
+const awsConfig = {
+    accessKeyId: process.env.AWS_ACESS,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+    apiVersion: process.env.AWS_API_VERSION
+}
+
+const SES = new AWS.SES(awsConfig)
 
 export const register = async (req, res) => {
     try {
