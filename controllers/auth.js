@@ -151,3 +151,8 @@ export const sendTestEmail = async (req, res) => {
         })
 
 }
+
+export const forgotPassword = (req, res) => {
+    console.log('forgot password page')
+    res.json({ok: true})
+}
