@@ -10,9 +10,10 @@ import {currentUser, forgotPassword, login, logout, register, sendTestEmail} fro
 // routes
 router.post('/register', register)
 router.post('/login', login)
+router.post('/forgot-password', forgotPassword)
+
 router.get('/logout', logout)
 router.get('/current-user', requireSignIn, currentUser)
 router.get('/send-email', sendTestEmail)
-router.get('/forgot-password', forgotPassword)
 
 module.exports = router
