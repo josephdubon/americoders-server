@@ -2,6 +2,7 @@ import User from '../models/user'
 import {comparePassword, hashPassword} from '../utils/auth'
 import jwt from 'jsonwebtoken'
 import AWS from 'aws-sdk'
+import {nanoid} from 'nanoid'
 
 
 // AWS SES Config
@@ -122,7 +123,7 @@ export const sendTestEmail = async (req, res) => {
                 Html: {
                     Charset: 'UTF-8',
                     Data: `
-                    <html lang="en">
+                    <html lang='en'>
                         <h1>Americoders</h1>
                         <h2>Reset Password</h2>
                         <p>Hello friend,<br><br>
