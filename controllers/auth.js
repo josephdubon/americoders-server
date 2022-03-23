@@ -127,7 +127,6 @@ export const sendTestEmail = async (req, res) => {
                         <h1>Americoders</h1>
                         <h2>Reset Password</h2>
                         <p>Hello friend,<br><br>
-                        It looks like you requested a password reset.<br>
                         Please use the following link to reset your password.</p>
                     </html>
                     `,
