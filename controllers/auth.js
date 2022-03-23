@@ -134,7 +134,7 @@ export const sendTestEmail = async (req, res) => {
             },
             Subject: {
                 Charset: 'UTF-8',
-                Data: 'RE: Your requested account password reset link...',
+                Data: 'RE: Password reset link',
             },
         },
     }
