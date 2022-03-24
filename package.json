@@ -16,6 +16,7 @@
   "author": "Joseph Dubon",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.1095.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -27,6 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.2.4",
     "morgan": "^1.10.0",
+    "nanoid": "^3.3.1",
     "nodemon": "^2.0.15"
   }
 }

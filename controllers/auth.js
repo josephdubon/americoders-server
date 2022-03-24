@@ -1,6 +1,19 @@
 import User from '../models/user'
 import {comparePassword, hashPassword} from '../utils/auth'
 import jwt from 'jsonwebtoken'
+import AWS from 'aws-sdk'
+import {nanoid} from 'nanoid'
+
+
+// AWS SES Config
+const awsConfig = {
+    accessKeyId: process.env.AWS_ACESS,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_REGION,
+    apiVersion: process.env.AWS_API_VERSION
+}
+
+const SES = new AWS.SES(awsConfig)
 
 export const register = async (req, res) => {
     try {
@@ -53,6 +66,9 @@ export const login = async (req, res) => {
         // compare passwords
         const match = await comparePassword(password, user.password)
 
+        // if no match, send user a message and clear out form field
+        if (!match) return res.status(400).send('Wrong password!')
+
         // create signed jwt
         const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET, {
             expiresIn: '7d', // expire cookie in 7 days time
@@ -92,5 +108,126 @@ export const currentUser = async (req, res) => {
         return res.json({ok: true}) // set user route to true
     } catch (err) {
         console.log(err)
+    }
+}
+
+export const sendTestEmail = async (req, res) => {
+    // console.log('send email using SES')
+    // return res.json({ok: true})
+    const params = {
+        Source: process.env.EMAIL_SEND,
+        Destination: {
+            ToAddresses: [process.env.EMAIL_RECIEVE], // this must be an array
+        },
+        ReplyToAddresses: [process.env.EMAIL_REPLY], // this must be an array
+        // email template config for email password reset
+        Message: {
+            Body: {
+                Html: {
+                    Charset: 'UTF-8',
+                    Data: `
+                    <html lang='en'>
+                        <h1>Americoders</h1>
+                        <h2>Reset Password</h2>
+                        <p>Hello friend,<br><br>
+                        Please use the following link to reset your password.</p>
+                    </html>
+                    `,
+                },
+            },
+            Subject: {
+                Charset: 'UTF-8',
+                Data: 'RE: Password reset link',
+            },
+        },
+    }
+
+    const emailSent = SES.sendEmail(params).promise()
+
+    emailSent
+        .then((data) => {
+            console.log(data)
+            res.json({ok: true})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+}
+
+export const forgotPassword = async (req, res) => {
+    try {
+        const {email} = req.body;
+        // console.log(email);
+        const shortCode = nanoid(6).toUpperCase();
+        const user = await User.findOneAndUpdate(
+            {email},
+            {passwordResetCode: shortCode}
+        );
+        if (!user) return res.status(400).send("User not found");
+
+        // prepare for email
+        const params = {
+            Source: process.env.EMAIL_SEND,
+            Destination: {
+                ToAddresses: [email],
+            },
+            Message: {
+                Body: {
+                    Html: {
+                        Charset: "UTF-8",
+                        Data: `
+                <html>
+                  <h1>Reset password</h1>
+                  <p>Use this code to reset your password</p>
+                  <h2 style="color:red;">${shortCode}</h2>
+                  <i><a href='https://americoders.org'>americoders.org</a></i>
+                </html>
+              `,
+                    },
+                },
+                Subject: {
+                    Charset: "UTF-8",
+                    Data: "Reset Password",
+                },
+            },
+        };
+
+        const emailSent = SES.sendEmail(params).promise();
+        emailSent
+            .then((data) => {
+                res.json({ok: true});
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export const resetPassword = async (req, res) => {
+    try {
+        // destructure elements from body
+        const {email, code, newPassword} = req.body
+        // console.table({email, code, newPassword})
+        // hash password for privacy
+        const hashedPassword = await hashPassword(newPassword)
+
+        // get user
+        const user = User.findOneAndUpdate({
+                // find by email and passwordResetCode
+                email,
+                passwordResetCode: code,
+            },
+            // and update password and reset passwordResetCode to blank
+            {
+                password: hashedPassword,
+                passwordResetCode: '',
+            }).exec()
+
+        res.json({ok: true})
+    } catch (err) {
+        return res.status(400).send('Error! Try again.')
     }
 }
