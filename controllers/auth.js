@@ -178,7 +178,7 @@ export const forgotPassword = async (req, res) => {
                   <h1>Reset password</h1>
                   <p>Use this code to reset your password</p>
                   <h2 style="color:red;">${shortCode}</h2>
-                  <i><a style='link' href='https://americoders.org'>americoders.org</a></i>
+                  <i><a href='https://americoders.org'>americoders.org</a></i>
                 </html>
               `,
                     },
