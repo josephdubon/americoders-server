@@ -210,6 +210,6 @@ export const resetPassword = async (req, res) => {
     try {
         console.log('reset password yo!')
     } catch (err) {
-        console.log(err)
+        return res.status(400).send('Error! Try again.')
     }
 }
