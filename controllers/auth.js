@@ -196,7 +196,6 @@ export const forgotPassword = async (req, res) => {
         const emailSent = SES.sendEmail(params).promise();
         emailSent
             .then((data) => {
-                console.log(data);
                 res.json({ok: true});
             })
             .catch((err) => {
