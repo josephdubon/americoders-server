@@ -203,3 +203,11 @@ export const forgotPassword = async (req, res) => {
         console.log(err);
     }
 };
+
+export const resetPassword = async (req, res) => {
+    try {
+        console.log('reset password yo!')
+    } catch (err) {
+        console.log(err)
+    }
+}
