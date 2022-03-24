@@ -208,7 +208,25 @@ export const forgotPassword = async (req, res) => {
 
 export const resetPassword = async (req, res) => {
     try {
-        console.log('reset password yo!')
+        // destructure elements from body
+        const {email, code, newPassword} = req.body
+        // console.table({email, code, newPassword})
+        // hash password for privacy
+        const hashedPassword = await hashPassword(newPassword)
+
+        // get user
+        const user = User.findOneAndUpdate({
+                // find by email and passwordResetCode
+                email,
+                passwordResetCode: code,
+            },
+            // and update password and reset passwordResetCode to blank
+            {
+                password: hashedPassword,
+                passwordResetCode: '',
+            }).exec()
+
+        res.json({ok: true})
     } catch (err) {
         return res.status(400).send('Error! Try again.')
     }
