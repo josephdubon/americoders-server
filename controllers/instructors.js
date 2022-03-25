@@ -26,9 +26,9 @@ export const makeInstructor = async (req, res) => {
         console.log(accountLink)
 
         // (optional) pre-fill any info such as email (optional), then send url response to frontend
-        accountLink = Object.assign(accountLink), {
+        accountLink = Object.assign(accountLink, {
             'stripe_user[email': user.email,
-        }
+        })
 
         // then send the account link as response to frontend
         res.send(`${accountLink.url}?${queryString.stringify(accountLink)}`)
