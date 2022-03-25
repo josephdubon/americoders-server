@@ -1,6 +1,7 @@
 import User from '../models/user'
-import stripe from 'stripe'
 import queryString from 'query-string'
+
+const stripe = require('stripe')(process.env.STRIPE_SECRET)
 
 export const makeInstructor = async (req, res) => {
     try {
