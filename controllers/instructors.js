@@ -6,7 +6,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET)
 export const makeInstructor = async (req, res) => {
     try {
         // find user from db
-        const user = await User.findById(req.user.__id).exec()
+        const user = await User.findById(req.user._id).exec()
 
         // if user doesn't have a stripe_account_id yet, create one
         if (!user.stripe_account_id) {
