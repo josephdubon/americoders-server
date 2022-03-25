@@ -1,19 +1,17 @@
-const express = require('express')
-const cors = require('cors')
-const morgan = require('morgan')
-const mongoose = require('mongoose')
-const csrf = require('csurf')
-const cookieParser = require('cookie-parser')
-const {readdirSync} = require('fs')
+import express from 'express'
+import cors from 'cors'
+import {readdirSync} from 'fs'
+import mongoose from 'mongoose'
+import csrf from 'csurf'
+import cookieParser from 'cookie-parser'
 
-const port = process.env.PORT || 8000
+const morgan = require('morgan')
+require('dotenv').config()
 
 // initiate csrf protection
 const csrfProtection = csrf({
     cookie: true
 })
-
-require('dotenv').config()
 
 // express config
 const app = express()
@@ -43,9 +41,8 @@ app.get('/api/csrf-token', (req, res) => {
     })
 })
 
-
-
 // port config
+const port = process.env.PORT || 8000
 app.listen(port, () => {
     console.log(`Americoders server running on port: ${port}`)
 })
