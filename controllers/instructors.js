@@ -17,7 +17,7 @@ export const makeInstructor = async (req, res) => {
         }
 
         // create account link based on account id (for frontend to complete on-boarding)
-        const accountLink = await stripe.accountLinks.create({
+        let accountLink = await stripe.accountLinks.create({
             account: user.stripe_account_id,
             refresh_url: process.env.STRIPE_REDIRECT_URL,
             return_url: process.env.STRIPE_REDIRECT_URL,
