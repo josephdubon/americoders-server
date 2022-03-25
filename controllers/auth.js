@@ -231,3 +231,7 @@ export const resetPassword = async (req, res) => {
         return res.status(400).send('Error! Try again.')
     }
 }
+
+export const makeInstructor = async (req, res) => {
+    console.log('make instructor api was hit!')
+}
