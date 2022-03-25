@@ -23,7 +23,7 @@ export const makeInstructor = async (req, res) => {
             return_url: process.env.STRIPE_REDIRECT_URL,
             type: 'account_onboarding',
         })
-        console.log(accountLink)
+        // console.log(accountLink)
 
         // (optional) pre-fill any info such as email (optional), then send url response to frontend
         accountLink = Object.assign(accountLink, {
