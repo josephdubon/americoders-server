@@ -61,3 +61,19 @@ export const getAccountStatus = async (req, res) => {
         console.log('GET STATUS ERR ', err)
     }
 }
+
+export const currentInstructor = async (req, res) => {
+    try {
+        // find user
+        let user = await User.findById(req.user._id).select('-password').exec()
+
+        // verify user 'Instructor' role
+        if (!user.role.includes('Instructor')) {
+            return res.status(403)
+        } else {
+            res.json({ok: true})
+        }
+    } catch (err) {
+        console.log('CURRENT INSTRUCTOR ERROR ', err)
+    }
+}
