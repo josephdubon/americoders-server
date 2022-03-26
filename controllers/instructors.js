@@ -66,7 +66,7 @@ export const currentInstructor = async (req, res) => {
 
         // verify user 'Instructor' role
         if (!user.role.includes('Instructor')) {
-            return res.status(403)
+            return res.sendStatus(403)
         } else {
             res.json({ok: true})
         }
