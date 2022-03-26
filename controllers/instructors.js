@@ -11,7 +11,6 @@ export const makeInstructor = async (req, res) => {
         // if user doesn't have a stripe_account_id yet, create one
         if (!user.stripe_account_id) {
             const account = await stripe.accounts.create({type: 'express'})
-            // console.log('ACCOUNT => ', account.id)
             user.stripe_account_id = account.id
             user.save()
         }
