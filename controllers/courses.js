@@ -1,5 +1,8 @@
 import AWS from 'aws-sdk'
 import {nanoid} from 'nanoid'
+import Course from '../models/course'
+import slugify from "slugify";
+
 
 // AWS SES Config
 const awsConfig = {
