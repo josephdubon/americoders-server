@@ -8,3 +8,19 @@ export const requireSignIn = expressJwt({
     secret: process.env.JWT_SECRET,
     algorithms: ['HS256'],
 })
+
+// confirm user is an instructor to continue request
+export const isInstructor = async (req, res, next) => {
+    try {
+        // get user
+        const user = await User.findById(req.user._id).exec()
+        // if no user found, give unauthorized error, if found run next()
+        if (!user.role.includes('Instructor')) {
+            return res.sendStatus(403)
+        } else {
+            next()
+        }
+    } catch (err) {
+        console.log('IS INSTRUCTOR ', err)
+    }
+}
