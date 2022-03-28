@@ -5,7 +5,7 @@ const router = express.Router()
 import {isInstructor, requireSignIn} from '../middlewares'
 
 // controllers
-import {createCourse, removeImage, uploadImage} from '../controllers/courses'
+import {createCourse, removeImage, uploadImage} from '../controllers/course'
 
 // routes
 
