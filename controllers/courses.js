@@ -77,7 +77,22 @@ export const removeImage = async (req, res) => {
 
 export const createCourse = async (req, res) => {
     try {
-        console.log('CREATE COURSE API HIT!')
+        // console.log('CREATE COURSE API HIT!')
+        const courseExists = await Course.findOne({
+            slug: slugify(req.body.name.toLowerCase()) // slug is auto generated replacing spaces with a dash '-'
+        })
+
+        // if the course exists send user error
+        if (courseExists) return res.status(400).send('Title matches existing course.')
+
+        // create course and send to db
+        const course = await new Course({
+            slug: slugify(req.body.name),
+            instructor: req.user._id,
+            ...req.body, // unpack data from form
+        }).save()
+
+        res.json(course)
     } catch (err) {
         console.log('CREATE COURSE ERROR ', err)
     }
