@@ -76,6 +76,8 @@ export const removeImage = async (req, res) => {
 }
 
 export const createCourse = async (req, res) => {
+    console.log('CREATE COURSE', req.body)
+    // return
     try {
         // console.log('CREATE COURSE API HIT!')
         const courseExists = await Course.findOne({
