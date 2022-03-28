@@ -71,3 +71,11 @@ export const removeImage = async (req, res) => {
         console.log('REMOVE IMAGE ', err)
     }
 }
+
+export const createCourse = async (req, res) => {
+    try {
+        console.log('CREATE COURSE API HIT!')
+    } catch (err) {
+        console.log('CREATE COURSE ERROR ', err)
+    }
+}
