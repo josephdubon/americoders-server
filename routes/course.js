@@ -8,6 +8,8 @@ import {isInstructor, requireSignIn} from '../middlewares'
 import {createCourse, removeImage, uploadImage} from '../controllers/courses'
 
 // routes
+
+// image routes
 router.post('/course/upload-image', uploadImage)
 router.post('/course/remove-image', removeImage)
 
