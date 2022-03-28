@@ -94,6 +94,6 @@ export const createCourse = async (req, res) => {
 
         res.json(course)
     } catch (err) {
-        console.log('CREATE COURSE ERROR ', err)
+        return res.status(400).send('Course create failed. Try again.')
     }
 }
