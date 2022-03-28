@@ -13,4 +13,7 @@ import {createCourse, removeImage, uploadImage} from '../controllers/courses'
 router.post('/course/upload-image', uploadImage)
 router.post('/course/remove-image', removeImage)
 
+// course routes
+router.post('/course', requireSignIn, isInstructor, createCourse) // must be a logged-in instructor for request
+
 module.exports = router
