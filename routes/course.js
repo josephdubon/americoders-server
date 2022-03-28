@@ -2,10 +2,10 @@ const express = require('express')
 const router = express.Router()
 
 // middleware
-import {requireSignIn} from '../middlewares'
+import {isInstructor, requireSignIn} from '../middlewares'
 
 // controllers
-import {removeImage, uploadImage} from '../controllers/courses'
+import {createCourse, removeImage, uploadImage} from '../controllers/courses'
 
 // routes
 router.post('/course/upload-image', uploadImage)
