@@ -75,3 +75,17 @@ export const currentInstructor = async (req, res) => {
         console.log('CURRENT INSTRUCTOR ERROR ', err)
     }
 }
+
+export const instructorCourses = async (req, res) => {
+    try {
+        const courses = await Course
+            .find({instructor: req.user._id}) // find courses by use id
+            .sort({createdAt: -1}) // sort by created dateAt date from newest to oldest
+            .exec()
+
+        console.log('instructor courses api hit!')
+        res.json(courses)
+    } catch (err) {
+        console.log('CURRENT INSTRUCTOR COURSES ERROR ', err)
+    }
+}
