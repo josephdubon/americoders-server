@@ -5,7 +5,7 @@ const router = express.Router()
 import {isInstructor, requireSignIn} from '../middlewares'
 
 // controllers
-import {createCourse, removeImage, uploadImage} from '../controllers/course'
+import {createCourse, readCourseData, removeImage, uploadImage} from '../controllers/course'
 
 // routes
 
@@ -15,5 +15,6 @@ router.post('/course/remove-image', removeImage)
 
 // course routes
 router.post('/course', requireSignIn, isInstructor, createCourse) // must be a logged-in instructor for request
+router.get('/course/:slug', readCourseData)
 
 module.exports = router
