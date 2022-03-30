@@ -1,4 +1,5 @@
 import User from '../models/user'
+import Course from '../models/course'
 import queryString from 'query-string'
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET)
@@ -11,7 +12,6 @@ export const makeInstructor = async (req, res) => {
         // if user doesn't have a stripe_account_id yet, create one
         if (!user.stripe_account_id) {
             const account = await stripe.accounts.create({type: 'express'})
-            // console.log('ACCOUNT => ', account.id)
             user.stripe_account_id = account.id
             user.save()
         }
@@ -23,7 +23,6 @@ export const makeInstructor = async (req, res) => {
             return_url: process.env.STRIPE_REDIRECT_URL,
             type: 'account_onboarding',
         })
-        // console.log(accountLink)
 
         // (optional) pre-fill any info such as email (optional), then send url response to frontend
         accountLink = Object.assign(accountLink, {
@@ -41,7 +40,6 @@ export const getAccountStatus = async (req, res) => {
     try {
         const user = await User.findById(req.user._id).exec()
         const account = await stripe.accounts.retrieve(user.stripe_account_id)
-        console.log('ACCOUNT => ', account)
 
         // check if account has charges enabled
         if (!account.charges_enabled) {
@@ -69,11 +67,25 @@ export const currentInstructor = async (req, res) => {
 
         // verify user 'Instructor' role
         if (!user.role.includes('Instructor')) {
-            return res.status(403)
+            return res.sendStatus(403)
         } else {
             res.json({ok: true})
         }
     } catch (err) {
         console.log('CURRENT INSTRUCTOR ERROR ', err)
+    }
+}
+
+export const instructorCourses = async (req, res) => {
+    try {
+        const courses = await Course
+            .find({instructor: req.user._id}) // find courses by use id
+            .sort({createdAt: -1}) // sort by created dateAt date from newest to oldest
+            .exec()
+
+        console.log('instructor courses api hit!')
+        res.json(courses)
+    } catch (err) {
+        console.log('CURRENT INSTRUCTOR COURSES ERROR ', err)
     }
 }
