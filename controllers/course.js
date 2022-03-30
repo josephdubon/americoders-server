@@ -97,3 +97,19 @@ export const createCourse = async (req, res) => {
         return res.status(400).send('Course create failed. Try again.')
     }
 }
+
+export const readCourseData = async (req, res) => {
+    try {
+        const foundCourse = await Course
+            .findOne({slug: req.params.slug})
+            .populate(
+                'instructor', '_id name'
+            ).exec()
+
+        res.json(foundCourse)
+
+        console.log(foundCourse)
+    } catch (err) {
+        console.log('READ COURSE DATA ERROR ', err)
+    }
+}
