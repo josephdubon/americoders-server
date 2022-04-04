@@ -13,6 +13,10 @@ import {createCourse, readCourseData, removeImage, uploadImage} from '../control
 router.post('/course/upload-image', uploadImage)
 router.post('/course/remove-image', removeImage)
 
+// video routes
+router.post('/course/upload-video', requireSignIn, formidable(), uploadVideo)
+router.post('/course/remove-video', removeVideo)
+
 // course routes
 router.post('/course', requireSignIn, isInstructor, createCourse) // must be a logged-in instructor for request
 router.get('/course/:slug', readCourseData)
