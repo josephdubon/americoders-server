@@ -1,5 +1,4 @@
-const express = require('express')
-const router = express.Router()
+import express from 'express'
 
 // middleware
 import {requireSignIn} from '../middlewares'
