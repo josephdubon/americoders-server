@@ -7,6 +7,9 @@ import {requireSignIn} from '../middlewares'
 // controllers
 import {currentUser, forgotPassword, login, logout, register, resetPassword, sendTestEmail} from '../controllers/auth'
 
+// add router
+const router = express.Router()
+
 // routes
 router.post('/register', register)
 router.post('/login', login)
