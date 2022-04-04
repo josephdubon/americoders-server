@@ -1,4 +1,13 @@
-const express = require('express')
+import express from 'express'
+import formidable from 'express-formidable'
+
+// middleware
+import {isInstructor, requireSignIn} from '../middlewares'
+
+// controllers
+import {createCourse, readCourseData, removeImage, removeVideo, uploadImage, uploadVideo} from '../controllers/course'
+
+// add router
 const router = express.Router()
 
 // middleware
