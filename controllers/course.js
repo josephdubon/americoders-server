@@ -108,12 +108,18 @@ export const uploadVideo = async (req, res) => {
 
 export const removeVideo = async (req, res) => {
     try {
-        // get data from s3
-        const {video} = req.files
+        // get video data from s3
+        const {
+            Bucket,
+            Key
+        } = req.body
+
+        // if nothing to destructure return error
+        if (!Bucket && !Key) return res.status(400).send('No video')
+
         // image params
         const params = {
-            Bucket: video.Bucket,
-            Key: video.Key,
+            Bucket, Key,
         }
 
         // send remove request to s3
@@ -125,7 +131,7 @@ export const removeVideo = async (req, res) => {
             res.send({ok: true})
         })
     } catch (err) {
-        console.log('REMOVE IMAGE ', err)
+        console.log('REMOVE VIDEO ', err)
     }
 }
 
