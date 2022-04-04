@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk'
 import {nanoid} from 'nanoid'
 import Course from '../models/course'
-import slugify from "slugify";
-
+import slugify from 'slugify'
+import {readFileSync} from 'fs'
 
 // AWS SES Config
 const awsConfig = {
@@ -66,6 +66,60 @@ export const removeImage = async (req, res) => {
         S3.deleteObject(params, (err, data) => {
             if (err) {
                 console.log('REMOVE IMAGE S3 ', err)
+                res.sendStatus(400)
+            }
+            res.send({ok: true})
+        })
+    } catch (err) {
+        console.log('REMOVE IMAGE ', err)
+    }
+}
+
+export const uploadVideo = async (req, res) => {
+    try {
+        // confirm video
+        const {video} = req.files
+
+        // if no video return error
+        if (!video) return res.status(400).send('No video')
+
+        // video params
+        const params = {
+            Bucket: 'americodersbucket',
+            Key: `${nanoid()}.${video.type.split('/')[1]}`,
+            Body: readFileSync(video.path),
+            ACL: 'public-read',
+            ContentType: video.type,
+        }
+
+        // upload video to s3
+        S3.upload(params, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.sendStatus(400)
+            }
+            console.log(data)
+            res.send(data)
+        })
+    } catch (err) {
+        console.log('Video Upload Error ', err)
+    }
+}
+
+export const removeVideo = async (req, res) => {
+    try {
+        // get data from s3
+        const {video} = req.files
+        // image params
+        const params = {
+            Bucket: video.Bucket,
+            Key: video.Key,
+        }
+
+        // send remove request to s3
+        S3.deleteObject(params, (err, data) => {
+            if (err) {
+                console.log('REMOVE VIDEO S3 ', err)
                 res.sendStatus(400)
             }
             res.send({ok: true})
