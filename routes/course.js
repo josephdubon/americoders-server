@@ -16,7 +16,7 @@ router.post('/course/remove-image', removeImage)
 
 // video routes
 router.post('/course/upload-video', requireSignIn, formidable(), uploadVideo)
-router.post('/course/remove-video', removeVideo)
+router.post('/course/remove-video', requireSignIn, removeVideo)
 
 // course routes
 router.post('/course', requireSignIn, isInstructor, createCourse) // must be a logged-in instructor for request
