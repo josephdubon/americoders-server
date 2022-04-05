@@ -196,8 +196,6 @@ export const readCourseData = async (req, res) => {
             ).exec()
 
         res.json(foundCourse)
-
-        console.log(foundCourse)
     } catch (err) {
         console.log('READ COURSE DATA ERROR ', err)
     }
