@@ -5,7 +5,15 @@ import formidable from 'express-formidable'
 import {isInstructor, requireSignIn} from '../middlewares'
 
 // controllers
-import {addLesson, createCourse, readCourseData, removeImage, removeVideo, uploadImage, uploadVideo} from '../controllers/course'
+import {
+    addLesson,
+    createCourse,
+    readCourseData,
+    removeImage,
+    removeVideo,
+    uploadImage,
+    uploadVideo
+} from '../controllers/course'
 
 // add router
 const router = express.Router()
