@@ -11,6 +11,7 @@ import {
     readCourseData,
     removeImage,
     removeVideo,
+    updateCourse,
     uploadImage,
     uploadVideo
 } from '../controllers/course'
@@ -28,6 +29,8 @@ router.post('/course/remove-video/:instructorId', requireSignIn, removeVideo)
 
 // course routes
 router.get('/course/:slug', readCourseData)
+
+router.put('/course/:slug', requireSignIn, updateCourse) // must be a logged-in instructor for request
 
 router.post('/course', requireSignIn, isInstructor, createCourse) // must be a logged-in instructor for request
 router.post('/course/lesson/:slug/:instructorId', requireSignIn, addLesson)
