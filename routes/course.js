@@ -19,6 +19,8 @@ router.post('/course/upload-video/:instructorId', requireSignIn, formidable(), u
 router.post('/course/remove-video/:instructorId', requireSignIn, removeVideo)
 
 // course routes
+router.get('/course/:slug', readCourseData)
+
 router.post('/course', requireSignIn, isInstructor, createCourse) // must be a logged-in instructor for request
 router.get('/course/:slug', readCourseData)
 
