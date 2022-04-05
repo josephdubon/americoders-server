@@ -77,6 +77,11 @@ export const removeImage = async (req, res) => {
 
 export const uploadVideo = async (req, res) => {
     try {
+        // confirm user and instructor id's
+        if (req.user._id != req.params.instructorId) {
+            return res.status(400).send('Unauthorized')
+        }
+
         // confirm video
         const {video} = req.files
 
