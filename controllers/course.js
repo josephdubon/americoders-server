@@ -177,3 +177,44 @@ export const readCourseData = async (req, res) => {
         console.log('READ COURSE DATA ERROR ', err)
     }
 }
+
+export const addLesson = async (req, res) => {
+    try {
+        // console.log('hit add lesson api!')
+
+        // get lesson data, content, and media
+        const {slug, instructorId} = req.params
+        const {title, content, video} = req.body
+
+        // confirm user and instructor id's
+        if (req.user._id !== instructorId) {
+            return res.status(400).send('Unauthorized')
+        }
+
+        // update course
+        const updated = await Course.findOneAndUpdate({slug},
+            // updated data
+            {
+                $push: {
+                    lessons: {
+                        title,
+                        content,
+                        video,
+                        slug: slugify(title)
+                    }
+                }
+            },
+            {new: true}
+        )
+            .populate('instructor', '_id name') // populate instructor fields: _id and name
+            .exec()
+
+        // send data
+        res.json(updated)
+
+    } catch (err) {
+        console.log('ADD LESSON: ', err)
+        return res.status(400).send('Add lesson failed')
+    }
+}
+
