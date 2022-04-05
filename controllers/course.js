@@ -1,8 +1,8 @@
 import AWS from 'aws-sdk'
 import {nanoid} from 'nanoid'
 import Course from '../models/course'
-import slugify from "slugify";
-
+import slugify from 'slugify'
+import {readFileSync} from 'fs'
 
 // AWS SES Config
 const awsConfig = {
@@ -75,6 +75,70 @@ export const removeImage = async (req, res) => {
     }
 }
 
+export const uploadVideo = async (req, res) => {
+    try {
+        // confirm user and instructor id's
+        if (req.user._id !== req.params.instructorId) {
+            return res.status(400).send('Unauthorized')
+        }
+
+        // confirm video
+        const {video} = req.files
+
+        // if no video return error
+        if (!video) return res.status(400).send('No video')
+
+        // video params
+        const params = {
+            Bucket: 'americodersbucket',
+            Key: `${nanoid()}.${video.type.split('/')[1]}`,
+            Body: readFileSync(video.path),
+            ACL: 'public-read',
+            ContentType: video.type,
+        }
+
+        // upload video to s3
+        S3.upload(params, (err, data) => {
+            if (err) {
+                console.log(err)
+                return res.sendStatus(400)
+            }
+            res.send(data)
+        })
+    } catch (err) {
+        console.log('Video Upload Error ', err)
+    }
+}
+
+export const removeVideo = async (req, res) => {
+    try {
+        // get video data from s3
+        const {
+            Bucket,
+            Key
+        } = req.body
+
+        // if nothing to destructure return error
+        if (!Bucket && !Key) return res.status(400).send('No video')
+
+        // image params
+        const params = {
+            Bucket, Key,
+        }
+
+        // send remove request to s3
+        S3.deleteObject(params, (err, data) => {
+            if (err) {
+                console.log('REMOVE VIDEO S3 ', err)
+                res.sendStatus(400)
+            }
+            res.send({ok: true})
+        })
+    } catch (err) {
+        console.log('REMOVE VIDEO ', err)
+    }
+}
+
 export const createCourse = async (req, res) => {
     try {
         // console.log('CREATE COURSE API HIT!')
@@ -113,3 +177,44 @@ export const readCourseData = async (req, res) => {
         console.log('READ COURSE DATA ERROR ', err)
     }
 }
+
+export const addLesson = async (req, res) => {
+    try {
+        // console.log('hit add lesson api!')
+
+        // get lesson data, content, and media
+        const {slug, instructorId} = req.params
+        const {title, content, video} = req.body
+
+        // confirm user and instructor id's
+        if (req.user._id !== instructorId) {
+            return res.status(400).send('Unauthorized')
+        }
+
+        // update course
+        const updated = await Course.findOneAndUpdate({slug},
+            // updated data
+            {
+                $push: {
+                    lessons: {
+                        title,
+                        content,
+                        video,
+                        slug: slugify(title)
+                    }
+                }
+            },
+            {new: true}
+        )
+            .populate('instructor', '_id name') // populate instructor fields: _id and name
+            .exec()
+
+        // send data
+        res.json(updated)
+
+    } catch (err) {
+        console.log('ADD LESSON: ', err)
+        return res.status(400).send('Add lesson failed')
+    }
+}
+
