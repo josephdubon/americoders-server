@@ -103,7 +103,6 @@ export const uploadVideo = async (req, res) => {
                 console.log(err)
                 return res.sendStatus(400)
             }
-            console.log(data)
             res.send(data)
         })
     } catch (err) {
