@@ -241,3 +241,22 @@ export const addLesson = async (req, res) => {
     }
 }
 
+export const removeLesson = async (req, res) => {
+    // collect slug from url params
+    const {slug, lessonId} = req.params
+
+    // find course by slug
+    const course = await Course.findOne({slug}).exec()
+
+    // if logged in user does not match course instructor id send error
+    if (req.user._id != course.instructor) {
+        return res.status(400).send('Unauthorized.')
+    }
+
+    // pull lesson from course and delete from server
+    const deletedLesson = await Course.findByIdAndUpdate(course._id, {
+        $pull: {lessons: {_id: lessonId}} // pull lesson out of array by id
+    }).exec()
+
+    res.json({ok: true})
+}
