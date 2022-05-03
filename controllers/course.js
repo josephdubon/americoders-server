@@ -261,3 +261,7 @@ export const removeLesson = async (req, res) => {
 
     res.json({ok: true})
 }
+
+export const updateLesson = async (req, res) => {
+    console.log('update lesson hit!')
+}
