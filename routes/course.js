@@ -14,6 +14,7 @@ import {
     removeVideo,
     updateCourse,
     uploadImage,
+    updateLesson,
     uploadVideo
 } from '../controllers/course'
 
@@ -35,6 +36,7 @@ router.post('/course', requireSignIn, isInstructor, createCourse) // must be a l
 
 // lesson routes
 router.post('/course/lesson/:slug/:instructorId', requireSignIn, addLesson) // must be a logged-in instructor for request
+router.put('/course/lesson/:slug/:instructorId', requireSignIn, updateLesson) // must be a logged-in instructor for request
 router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
 
 module.exports = router
