@@ -215,7 +215,8 @@ export const addLesson = async (req, res) => {
         }
 
         // update course
-        const updated = await Course.findOneAndUpdate({slug},
+        const updated = await Course.findOneAndUpdate(
+            {slug},
             // updated data
             {
                 $push: {
