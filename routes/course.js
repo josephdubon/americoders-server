@@ -5,7 +5,18 @@ import formidable from 'express-formidable'
 import {isInstructor, requireSignIn} from '../middlewares'
 
 // controllers
-import {addLesson, createCourse, readCourseData, removeImage, removeVideo, uploadImage, uploadVideo} from '../controllers/course'
+import {
+    addLesson,
+    createCourse,
+    readCourseData,
+    removeImage,
+    removeLesson,
+    removeVideo,
+    updateCourse,
+    uploadImage,
+    updateLesson,
+    uploadVideo
+} from '../controllers/course'
 
 // add router
 const router = express.Router()
@@ -20,8 +31,12 @@ router.post('/course/remove-video/:instructorId', requireSignIn, removeVideo)
 
 // course routes
 router.get('/course/:slug', readCourseData)
-
+router.put('/course/:slug', requireSignIn, updateCourse) // must be a logged-in instructor for request
 router.post('/course', requireSignIn, isInstructor, createCourse) // must be a logged-in instructor for request
-router.post('/course/lesson/:slug/:instructorId', requireSignIn, addLesson)
+
+// lesson routes
+router.post('/course/lesson/:slug/:instructorId', requireSignIn, addLesson) // must be a logged-in instructor for request
+router.put('/course/lesson/:slug/:instructorId', requireSignIn, updateLesson) // must be a logged-in instructor for request
+router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
 
 module.exports = router

@@ -162,6 +162,31 @@ export const createCourse = async (req, res) => {
     }
 }
 
+export const updateCourse = async (req, res) => {
+    try {
+        // get course slug
+        const {slug} = req.params
+
+        // find course from slug
+        const course = await Course.findOne({slug}).exec()
+
+        // if _id and instructor do not match send an error message
+        if (req.user._id != course.instructor) {
+            return res.status(400).send('Unauthorized')
+        }
+
+        // find and update course
+        const updated = await Course.findOneAndUpdate({slug}, req.body, {
+            new: true,
+        }).exec()
+
+        // save updates
+        res.json(updated)
+    } catch (err) {
+        return res.status(400).send('Update create failed. Try again.', err.message)
+    }
+}
+
 export const readCourseData = async (req, res) => {
     try {
         const foundCourse = await Course
@@ -171,8 +196,6 @@ export const readCourseData = async (req, res) => {
             ).exec()
 
         res.json(foundCourse)
-
-        console.log(foundCourse)
     } catch (err) {
         console.log('READ COURSE DATA ERROR ', err)
     }
@@ -192,7 +215,8 @@ export const addLesson = async (req, res) => {
         }
 
         // update course
-        const updated = await Course.findOneAndUpdate({slug},
+        const updated = await Course.findOneAndUpdate(
+            {slug},
             // updated data
             {
                 $push: {
@@ -218,3 +242,58 @@ export const addLesson = async (req, res) => {
     }
 }
 
+export const removeLesson = async (req, res) => {
+    // collect slug from url params
+    const {slug, lessonId} = req.params
+
+    // find course by slug
+    const course = await Course.findOne({slug}).exec()
+
+    // if logged in user does not match course instructor id send error
+    if (req.user._id != course.instructor) {
+        return res.status(400).send('Unauthorized.')
+    }
+
+    // pull lesson from course and delete from server
+    const deletedLesson = await Course.findByIdAndUpdate(course._id, {
+        $pull: {lessons: {_id: lessonId}} // pull lesson out of array by id
+    }).exec()
+
+    res.json({ok: true})
+}
+
+export const updateLesson = async (req, res) => {
+    try {
+        // collect data
+        const {slug} = req.params
+        const {_id, title, content, video, free_preview} = req.body
+        const course = await Course.findOne({slug})
+            .select('instructor')
+            .exec()
+
+        // verify instructor id
+        if (course.instructor._id != req.user._id) {
+            return res.status(400).send('Unauthorized')
+        }
+
+        // update lesson
+        const updated = await Course.updateOne(
+            {'lessons._id': _id},
+            {
+                $set: {
+                    'lessons.$[].title': title,
+                    'lessons.$[].content': content,
+                    'lessons.$[].video': video,
+                    'lessons.$[].free_preview': free_preview,
+                },
+            },
+            {new: true}
+        ).exec()
+
+        console.log('updated', updated)
+        res.json({ok: true})
+    } catch (err) {
+        // console.log('updateLesson: ', err)
+        return res.status(400).send('Update lesson attempt failed.')
+    }
+}
