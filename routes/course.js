@@ -8,13 +8,15 @@ import {isInstructor, requireSignIn} from '../middlewares'
 import {
     addLesson,
     createCourse,
+    publishCourse,
     readCourseData,
     removeImage,
     removeLesson,
     removeVideo,
+    unpublishCourse,
     updateCourse,
-    uploadImage,
     updateLesson,
+    uploadImage,
     uploadVideo
 } from '../controllers/course'
 
