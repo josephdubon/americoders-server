@@ -293,7 +293,7 @@ export const updateLesson = async (req, res) => {
         console.log('updated', updated)
         res.json({ok: true})
     } catch (err) {
-        // console.log('updateLesson: ', err)
+        console.log('updateLesson: ', err)
         return res.status(400).send('Update lesson attempt failed.')
     }
 }
