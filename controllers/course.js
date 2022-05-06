@@ -349,3 +349,17 @@ export const unpublishCourse = async (req, res) => {
         return res.status(400).send('Unpublish course failed')
     }
 }
+
+export const courses = async (req, res) => {
+    try {
+        // make request to get all courses by instructor
+        const allCourses = await Course.find({published: true})
+            .populate('instructor', '_id name')
+            .exec()
+
+        res.json(allCourses)
+
+    } catch (err) {
+        console.log('Get courses failed.')
+    }
+}
