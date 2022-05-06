@@ -7,6 +7,7 @@ import {isInstructor, requireSignIn} from '../middlewares'
 // controllers
 import {
     addLesson,
+    courses,
     createCourse,
     publishCourse,
     readCourseData,
