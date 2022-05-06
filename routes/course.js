@@ -24,6 +24,9 @@ import {
 // add router
 const router = express.Router()
 
+// courses listing routes
+router.get('/courses', courses)
+
 // image routes
 router.post('/course/upload-image', uploadImage)
 router.post('/course/remove-image', removeImage)
