@@ -281,10 +281,10 @@ export const updateLesson = async (req, res) => {
             {'lessons._id': _id},
             {
                 $set: {
-                    'lessons.$[].title': title,
-                    'lessons.$[].content': content,
-                    'lessons.$[].video': video,
-                    'lessons.$[].free_preview': free_preview,
+                    'lessons.$.title': title,
+                    'lessons.$.content': content,
+                    'lessons.$.video': video,
+                    'lessons.$.free_preview': free_preview,
                 },
             },
             {new: true}
