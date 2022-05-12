@@ -53,4 +53,6 @@ router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
 // enrollment routes
 router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
 
+router.post('/free-enrollment/:courseId', requireSignIn, freeEnrollment)
+
 module.exports = router
