@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
             data: String,
             default: '',
         },
+        courses: [{type: ObjectId, ref: 'Course'}]
     },
     {timestamps: true})
 
