@@ -51,6 +51,6 @@ router.put('/course/lesson/:slug/:instructorId', requireSignIn, updateLesson) //
 router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
 
 // enrollment routes
-router.get('check-enrollment/:courseId', requireSignIn, checkEnrollment)
+router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
 
 module.exports = router
