@@ -1,4 +1,6 @@
 const mongoose = require('mongoose')
+const {Schema} = mongoose
+const {ObjectId} = Schema
 
 // user schema / model
 const userSchema = new mongoose.Schema({
@@ -35,7 +37,8 @@ const userSchema = new mongoose.Schema({
             data: String,
             default: '',
         },
+        courses: [{type: ObjectId, ref: 'Course'}]
     },
     {timestamps: true})
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model('User', userSchema)
