@@ -8,6 +8,7 @@ import {isInstructor, requireSignIn} from '../middlewares'
 import {
     addLesson,
     courses,
+    checkEnrollment,
     createCourse,
     publishCourse,
     readCourseData,
