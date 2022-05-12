@@ -363,3 +363,27 @@ export const courses = async (req, res) => {
         console.log('Get courses failed.')
     }
 }
+
+export const checkEnrollment = async (req, res) => {
+    try {
+        const {courseId} = req.params
+
+        // find courses of the logged-in user
+        const user = await user.findById(req.user._id).exec()
+
+        // check if course id is found in user courses array
+        let ids = []
+        for (let i = 0; i < user.courses.length; i++) {
+            ids.push(user.courses[i].toString())
+        }
+
+        res.json({
+            status: ids.includes(courseId),
+            course: await Course.findById(courseId).exec(),
+        })
+
+    } catch (err) {
+        console.log('Check Enrollment Error', err)
+        return res.status(400).send('Check enrollment failed')
+    }
+}
