@@ -49,4 +49,7 @@ router.post('/course/lesson/:slug/:instructorId', requireSignIn, addLesson) // m
 router.put('/course/lesson/:slug/:instructorId', requireSignIn, updateLesson) // must be a logged-in instructor for request
 router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
 
+// enrollment routes
+router.get('check-enrollment/:courseId', requireSignIn, checkEnrollment)
+
 module.exports = router
