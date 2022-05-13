@@ -391,8 +391,8 @@ export const freeEnrollment = async (req, res) => {
         const result = await User.findByIdAndUpdate(req.user._id, {
                 $addToSet: {courses: course._id},
             },
-            {new: true}
-        ).exec()
+            {new: true})
+            .exec()
 
         res.json({
             message: 'Congratulations! You have successfully enrolled.',
