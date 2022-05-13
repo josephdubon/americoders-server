@@ -291,8 +291,8 @@ export const updateLesson = async (req, res) => {
                     'lessons.$.free_preview': free_preview,
                 },
             },
-            {new: true}
-        ).exec()
+            {new: true})
+            .exec()
 
         console.log('updated', updated)
         res.json({ok: true})
