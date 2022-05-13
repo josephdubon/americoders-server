@@ -317,10 +317,9 @@ export const publishCourse = async (req, res) => {
         let course = await Course.findByIdAndUpdate(
             courseId,
             {published: true},
-            {new: true}
-        ).exec()
-        // console.log("course published", course);
-        // return;
+            {new: true})
+            .exec()
+
         res.json(course)
     } catch (err) {
         console.log(err)
