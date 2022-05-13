@@ -342,10 +342,8 @@ export const unpublishCourse = async (req, res) => {
         let course = await Course.findByIdAndUpdate(
             courseId,
             {published: false},
-            {new: true}
-        ).exec()
-        // console.log("course unpublished", course);
-        // return;
+            {new: true})
+            .exec()
         res.json(course)
     } catch (err) {
         console.log(err)
