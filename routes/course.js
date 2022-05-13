@@ -11,6 +11,7 @@ import {
     courses,
     createCourse,
     freeEnrollment,
+    paidEnrollment,
     publishCourse,
     readCourseData,
     removeImage,
@@ -55,5 +56,6 @@ router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
 router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
 
 router.post('/free-enrollment/:courseId', requireSignIn, freeEnrollment)
+router.post('/paid-enrollment/:courseId', requireSignIn, paidEnrollment)
 
 module.exports = router
