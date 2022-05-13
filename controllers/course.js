@@ -425,18 +425,15 @@ export const paidEnrollment = async (req, res) => {
             payment_method_types: ['card'],
 
             // purchase details
-            line_items: [
-                {
-                    name: course.name,
-                    amount: Math.round(course.price.toFixed(2) * 100),  // get first 2 char
-                    currency: 'usd',
-                    quantity: 1,
-                }
-            ],
+            line_items: [{
+                name: course.name,
+                amount: Math.round(course.price.toFixed(2) * 100),  // get first 2 char
+                currency: 'usd', quantity: 1,
+            }],
 
             // charge buyer and transfer remaining balance to seller (after fee)
             payment_intent_data: {
-                application_fee_amount: Math.round(course.fee.toFixed(2) * 100),  // get first 2 char
+                application_fee_amount: Math.round(fee.toFixed(2) * 100),  // get first 2 char
                 transfer_data: {
                     destination: course.instructor.stripe_account_id,
                 },
