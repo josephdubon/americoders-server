@@ -377,7 +377,8 @@ export const checkEnrollment = async (req, res) => {
     }
     res.json({
         status: ids.includes(courseId),
-        course: await Course.findById(courseId).exec(),
+        course: await Course.findById(courseId)
+            .exec(),
     })
 }
 
