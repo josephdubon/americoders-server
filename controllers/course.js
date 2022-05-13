@@ -407,5 +407,57 @@ export const freeEnrollment = async (req, res) => {
 }
 
 export const paidEnrollment = async (req, res) => {
-    console.log('paid course api hit!')
+    try {
+
+        console.log('paid course api hit!')
+
+        // check if course is free or paid
+        const course = await Course.findById(req.params.courseId)
+            .populate('instructor')
+            .exec()
+
+        if (!course.paid) return // if course is not a paid course, show course
+
+        // application fee 30%
+        const fee = (course.price * 30 / 100)
+
+        // create Stripe session
+        // https://stripe.com/docs/api/checkout/sessions/create?lang=node
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+
+            // purchase details
+            line_items: [
+                {
+                    name: course.name,
+                    amount: Math.round(course.price.toFixed(2) * 100),  // get first 2 char
+                    currency: 'usd',
+                    quantity: 1,
+                }
+            ],
+
+            // charge buyer and transfer remaining balance to seller (after fee)
+            payment_intent_data: {
+                application_fee_amount: Math.round(course.fee.toFixed(2) * 100),  // get first 2 char
+                transfer_data: {
+                    destination: course.instructor.stripe_account_id,
+                },
+            },
+
+            // redirect url after successful/unsuccessful payment
+            success_url: `${process.env.STRIPE_SUCCESS_URL}/${course._id}`,
+            cancel_url: process.env.STRIPE_CANCEL_URL,
+        })
+
+        // sanity check
+        console.log('SESSION ID => ', session)
+
+        // update user data
+        await User.findByIdAndUpdate(req.user._id, {stripeSession: session}).exec()
+
+        res.send(session.id)
+    } catch (err) {
+        console.log('PAID ENROLLMENT ERR: ', err)
+        return res.status(400).send('Enrollment create failed')
+    }
 }
