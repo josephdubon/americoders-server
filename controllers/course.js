@@ -5,6 +5,9 @@ import slugify from 'slugify'
 import {readFileSync} from 'fs'
 import User from '../models/user'
 
+const Stripe = require('stripe')
+const stripe = Stripe(process.env.STRIPE_SECRET)
+
 // AWS SES Config
 const awsConfig = {
     accessKeyId: process.env.AWS_ACESS,
