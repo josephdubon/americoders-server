@@ -17,6 +17,7 @@ import {
     removeImage,
     removeLesson,
     removeVideo,
+    stripeSuccess,
     unpublishCourse,
     updateCourse,
     updateLesson,
@@ -57,5 +58,6 @@ router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
 
 router.post('/free-enrollment/:courseId', requireSignIn, freeEnrollment)
 router.post('/paid-enrollment/:courseId', requireSignIn, paidEnrollment)
+router.get('/stripe-success/:courseId', requireSignIn, stripeSuccess)
 
 module.exports = router
