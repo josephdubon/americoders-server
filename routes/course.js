@@ -22,7 +22,8 @@ import {
     updateCourse,
     updateLesson,
     uploadImage,
-    uploadVideo
+    uploadVideo,
+    userCourses,
 } from '../controllers/course'
 
 // add router
@@ -58,5 +59,8 @@ router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
 router.post('/free-enrollment/:courseId', requireSignIn, freeEnrollment)
 router.post('/paid-enrollment/:courseId', requireSignIn, paidEnrollment)
 router.get('/stripe-success/:courseId', requireSignIn, stripeSuccess)
+
+// user courses
+router.get('/user-courses', requireSignIn, userCourses)
 
 module.exports = router
