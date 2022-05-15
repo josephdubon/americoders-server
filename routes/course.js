@@ -2,7 +2,7 @@ import express from 'express'
 import formidable from 'express-formidable'
 
 // middleware
-import {isInstructor, requireSignIn} from '../middlewares'
+import {isEnrolled, isInstructor, requireSignIn} from '../middlewares'
 
 // controllers
 import {
@@ -62,5 +62,7 @@ router.get('/stripe-success/:courseId', requireSignIn, stripeSuccess)
 
 // user courses
 router.get('/user-courses', requireSignIn, userCourses)
+router.get('/user/course/:slug', requireSignIn, isEnrolled, readCourseData)
+
 
 module.exports = router
