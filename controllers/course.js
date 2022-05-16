@@ -501,3 +501,36 @@ export const userCourses = async (req, res) => {
 
     res.json(courses)
 }
+
+export const markComplete = async (req, res) => {
+    // get course data
+    const {courseId, lessonId} = req.body
+
+    // find if user has already created selected course
+    const existing = await Completed.findOne({
+        user: req.user._id,
+        course: courseId,
+    }).exec()
+
+    if (existing) {
+        // update lessons array list
+        const updated = await Completed.findOneAndUpdate({
+                user: req.user._id,
+                course: courseId,
+            }, {
+                $addToSet: {lessons: lessonId}
+            },
+        ).exec()
+
+        res.json({ok: true})
+    } else {
+        // create lessons array list
+        const created = await new Completed({
+            user: req.user._id,
+            course: courseId,
+            lessons: lessonId,
+        }).save()
+
+        res.json({ok: true})
+    }
+}
