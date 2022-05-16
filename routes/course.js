@@ -11,6 +11,7 @@ import {
     courses,
     createCourse,
     freeEnrollment,
+    markComplete,
     paidEnrollment,
     publishCourse,
     readCourseData,
@@ -64,5 +65,7 @@ router.get('/stripe-success/:courseId', requireSignIn, stripeSuccess)
 router.get('/user-courses', requireSignIn, userCourses)
 router.get('/user/course/:slug', requireSignIn, isEnrolled, readCourseData)
 
+// mark completed
+router.post('/mark-complete', requireSignIn, markComplete)
 
 module.exports = router
