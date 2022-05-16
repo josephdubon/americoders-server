@@ -548,3 +548,24 @@ export const listComplete = async (req, res) => {
 
     }
 }
+
+export const markIncomplete = async (req, res) => {
+    try {
+        // collect data
+        const {courseId, lessonId} = req.body
+
+        // update data
+        const updated = await Completed.findOneAndUpdate(
+            {
+                user: req.user._id,
+                course: courseId,
+            },
+            {
+                $pull: {lessons: lessonId},
+            }
+        ).exec()
+        res.json({ok: true})
+    } catch (err) {
+        console.log(err)
+    }
+}
