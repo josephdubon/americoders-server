@@ -2,7 +2,7 @@ import express from 'express'
 import formidable from 'express-formidable'
 
 // middleware
-import {isInstructor, requireSignIn} from '../middlewares'
+import {isEnrolled, isInstructor, requireSignIn} from '../middlewares'
 
 // controllers
 import {
@@ -22,7 +22,8 @@ import {
     updateCourse,
     updateLesson,
     uploadImage,
-    uploadVideo
+    uploadVideo,
+    userCourses,
 } from '../controllers/course'
 
 // add router
@@ -58,5 +59,10 @@ router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
 router.post('/free-enrollment/:courseId', requireSignIn, freeEnrollment)
 router.post('/paid-enrollment/:courseId', requireSignIn, paidEnrollment)
 router.get('/stripe-success/:courseId', requireSignIn, stripeSuccess)
+
+// user courses
+router.get('/user-courses', requireSignIn, userCourses)
+router.get('/user/course/:slug', requireSignIn, isEnrolled, readCourseData)
+
 
 module.exports = router
