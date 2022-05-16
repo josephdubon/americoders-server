@@ -4,6 +4,7 @@ import Course from '../models/course'
 import slugify from 'slugify'
 import {readFileSync} from 'fs'
 import User from '../models/user'
+import Completed from '../models/complete'
 
 const Stripe = require('stripe')
 const stripe = Stripe(process.env.STRIPE_SECRET)
