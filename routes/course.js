@@ -12,6 +12,7 @@ import {
     createCourse,
     freeEnrollment,
     listComplete,
+    markIncomplete,
     markComplete,
     paidEnrollment,
     publishCourse,
@@ -69,5 +70,6 @@ router.get('/user/course/:slug', requireSignIn, isEnrolled, readCourseData)
 // mark completed
 router.post('/mark-complete', requireSignIn, markComplete)
 router.post('/list-complete', requireSignIn, listComplete)
+router.post('/mark-incomplete', requireSignIn, markIncomplete)
 
 module.exports = router
