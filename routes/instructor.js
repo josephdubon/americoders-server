@@ -5,7 +5,13 @@ const router = express.Router()
 import {requireSignIn} from '../middlewares'
 
 // controllers
-import {currentInstructor, getAccountStatus, instructorCourses, makeInstructor} from '../controllers/instructor'
+import {
+    currentInstructor,
+    getAccountStatus,
+    instructorCourses,
+    makeInstructor,
+    studentCount
+} from '../controllers/instructor'
 
 // routes
 router.post('/make-instructor', requireSignIn, makeInstructor)
