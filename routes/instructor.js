@@ -10,6 +10,7 @@ import {
     getAccountStatus,
     instructorBalance,
     instructorCourses,
+    instructorPayoutSettings,
     makeInstructor,
     studentCount
 } from '../controllers/instructor'
@@ -24,5 +25,7 @@ router.get('/instructor-courses', requireSignIn, instructorCourses)
 router.post('/instructor/student-count', requireSignIn, studentCount)
 
 router.get('/instructor/balance', requireSignIn, instructorBalance)
+
+router.get('/instructor/payout-settings', requireSignIn, instructorPayoutSettings)
 
 module.exports = router
