@@ -8,6 +8,7 @@ import {requireSignIn} from '../middlewares'
 import {
     currentInstructor,
     getAccountStatus,
+    instructorBalance,
     instructorCourses,
     makeInstructor,
     studentCount
@@ -21,5 +22,7 @@ router.get('/current-instructor', requireSignIn, currentInstructor)
 router.get('/instructor-courses', requireSignIn, instructorCourses)
 
 router.post('/instructor/student-count', requireSignIn, studentCount)
+
+router.get('/instructor/balance', requireSignIn, instructorBalance)
 
 module.exports = router
