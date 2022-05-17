@@ -89,3 +89,50 @@ export const instructorCourses = async (req, res) => {
         console.log('CURRENT INSTRUCTOR COURSES ERROR ', err)
     }
 }
+
+export const studentCount = async (req, res) => {
+    try {
+        // find all user from given course
+        const users = await User.find({courses: req.body.courseId})
+            .select('_id')
+            .exec()
+
+        res.json(users)
+
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+export const instructorBalance = async (req, res) => {
+    try {
+        // find user
+        let user = await User.findById(req.user._id).exec()
+
+        // get balance from Stripe
+        const balance = await stripe.balance.retrieve({
+            stripeAccount: user.stripe_account_id,
+        })
+
+        res.json(balance)
+    } catch (err) {
+        console.log(err)
+    }
+}
+export const instructorPayoutSettings = async (req, res) => {
+    try {
+        // get user
+        const user = await User.findById(req.user._id).exec()
+
+        // get login link from Stripe
+        const loginLink = await stripe.account.createLoginLink(
+            user.stripe_seller.id,
+            {redirect_url: process.env.STRIPE_REDIRECT_URL}
+        )
+
+        res.json(loginLink.url)
+
+    } catch (err) {
+        console.log('Stripe payout settings login link error => ', err)
+    }
+}
