@@ -103,6 +103,7 @@ export const studentCount = async (req, res) => {
         console.log(err)
     }
 }
+
 export const instructorBalance = async (req, res) => {
     try {
         // find user
