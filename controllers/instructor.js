@@ -89,3 +89,17 @@ export const instructorCourses = async (req, res) => {
         console.log('CURRENT INSTRUCTOR COURSES ERROR ', err)
     }
 }
+
+export const studentCount = async (req, res) => {
+    try {
+        // find all user from given course
+        const users = await User.find({courses: req.body.courseId})
+            .select('_id')
+            .exec()
+
+        res.json(users)
+
+    } catch (err) {
+        console.log(err)
+    }
+}
