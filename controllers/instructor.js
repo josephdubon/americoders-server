@@ -119,3 +119,20 @@ export const instructorBalance = async (req, res) => {
         console.log(err)
     }
 }
+export const instructorPayoutSettings = async (req, res) => {
+    try {
+        // get user
+        const user = await User.findById(req.user._id).exec()
+
+        // get login link from Stripe
+        const loginLink = await stripe.account.createLoginLink(
+            user.stripe_seller.id,
+            {redirect_url: process.env.STRIPE_REDIRECT_URL}
+        )
+
+        res.json(loginLink.url)
+
+    } catch (err) {
+        console.log('Stripe payout settings login link error => ', err)
+    }
+}
