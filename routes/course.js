@@ -27,10 +27,14 @@ import {
     uploadImage,
     uploadVideo,
     userCourses,
+    mailingList
 } from '../controllers/course'
 
 // add router
 const router = express.Router()
+
+// mailing list sign up link
+router.put('/mailing-list', mailingList)
 
 // courses listing routes
 router.get('/courses', courses)
