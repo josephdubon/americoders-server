@@ -6,6 +6,9 @@ import {readFileSync} from 'fs'
 import User from '../models/user'
 import Completed from '../models/complete'
 
+const client = require('@sendgrid/client')
+client.setApiKey(process.env.SENDGRID_SECRET)
+
 const Stripe = require('stripe')
 const stripe = Stripe(process.env.STRIPE_SECRET)
 
