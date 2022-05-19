@@ -574,3 +574,32 @@ export const markIncomplete = async (req, res) => {
         console.log(err)
     }
 }
+
+export const mailingList = async (req, res) => {
+    try {
+        // make request to get all courses by instructor
+        const data = {
+            'contacts': [{
+                'email': `${req.body.email}`,
+            }],
+            'list_ids': [`${process.env.SENDGRID_MAILING_ID}`]
+        }
+
+        const request = {
+            url: `/v3/marketing/contacts`, method: 'PUT', body: data
+        }
+
+        client.request(request)
+            .then(([response, body]) => {
+                console.log(response.statusCode)
+                console.log(response.body)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+
+    } catch (err) {
+        console.log('Mailing list failed.')
+    }
+}
