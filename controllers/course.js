@@ -6,6 +6,9 @@ import {readFileSync} from 'fs'
 import User from '../models/user'
 import Completed from '../models/complete'
 
+const client = require('@sendgrid/client')
+client.setApiKey(process.env.SENDGRID_SECRET)
+
 const Stripe = require('stripe')
 const stripe = Stripe(process.env.STRIPE_SECRET)
 
@@ -569,5 +572,34 @@ export const markIncomplete = async (req, res) => {
         res.json({ok: true})
     } catch (err) {
         console.log(err)
+    }
+}
+
+export const mailingList = async (req, res) => {
+    try {
+        // make request to get all courses by instructor
+        const data = {
+            'contacts': [{
+                'email': `${req.body.email}`,
+            }],
+            'list_ids': [`${process.env.SENDGRID_MAILING_ID}`]
+        }
+
+        const request = {
+            url: `/v3/marketing/contacts`, method: 'PUT', body: data
+        }
+
+        client.request(request)
+            .then(([response, body]) => {
+                console.log(response.statusCode)
+                console.log(response.body)
+            })
+            .catch(error => {
+                console.error(error)
+            })
+
+
+    } catch (err) {
+        console.log('Mailing list failed.')
     }
 }
