@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
         },
         picture: {
             type: String,
-            default: '/avatar.png', // set default avatar image
+            default: 'images/avatars/avatar.png', // set default avatar image
         },
         role: {
             type: [String], // array for multiple options
