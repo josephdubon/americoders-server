@@ -102,6 +102,42 @@ export const logout = async (req, res) => {
     }
 }
 
+export const updateUser = async (req, res) => {
+    try {
+
+        // collect data/values
+        const {name, email, picture} = req.body
+
+        // validation
+        if (!name) return res.status(400).send('Name is required.')
+
+        // get user
+        const user = await User.findByIdAndUpdate(req.user._id, {
+            name: name,
+            email: email,
+            picture: picture,
+        }).exec()
+
+        // update  user to db
+        // const user = updateUser({
+        //     name, email, picture,
+        // })
+
+        // save user to db
+        await user.save()
+
+        // verify save success with message
+        return res.json({ok: true})
+
+    } catch (err) {
+        console.log(err)
+        {
+            return res.status(400).send('There was an error with your request. Please try again.')
+        }
+    }
+}
+
+
 export const currentUser = async (req, res) => {
     try {
         const user = await User.findById(req.user._id).select('-password').exec()
@@ -129,7 +165,7 @@ export const sendTestEmail = async (req, res) => {
                     <html lang='en'>
                         <h1>Americoders</h1>
                         <h2>Reset Password</h2>
-                        <p>Hello friend,<br><br>
+                        <p>Hello friend,<br/><br/>
                         Please use the following link to reset your password.</p>
                     </html>
                     `,
@@ -157,14 +193,14 @@ export const sendTestEmail = async (req, res) => {
 
 export const forgotPassword = async (req, res) => {
     try {
-        const {email} = req.body;
+        const {email} = req.body
         // console.log(email);
-        const shortCode = nanoid(6).toUpperCase();
+        const shortCode = nanoid(6).toUpperCase()
         const user = await User.findOneAndUpdate(
             {email},
             {passwordResetCode: shortCode}
-        );
-        if (!user) return res.status(400).send("User not found");
+        )
+        if (!user) return res.status(400).send('User not found')
 
         // prepare for email
         const params = {
@@ -175,36 +211,36 @@ export const forgotPassword = async (req, res) => {
             Message: {
                 Body: {
                     Html: {
-                        Charset: "UTF-8",
+                        Charset: 'UTF-8',
                         Data: `
                 <html>
                   <h1>Reset password</h1>
                   <p>Use this code to reset your password</p>
-                  <h2 style="color:red;">${shortCode}</h2>
+                  <h2 style='color:red;'>${shortCode}</h2>
                   <i><a href='https://americoders.org'>americoders.org</a></i>
                 </html>
               `,
                     },
                 },
                 Subject: {
-                    Charset: "UTF-8",
-                    Data: "Reset Password",
+                    Charset: 'UTF-8',
+                    Data: 'Reset Password',
                 },
             },
-        };
+        }
 
-        const emailSent = SES.sendEmail(params).promise();
+        const emailSent = SES.sendEmail(params).promise()
         emailSent
             .then((data) => {
-                res.json({ok: true});
+                res.json({ok: true})
             })
             .catch((err) => {
-                console.log(err);
-            });
+                console.log(err)
+            })
     } catch (err) {
-        console.log(err);
+        console.log(err)
     }
-};
+}
 
 export const resetPassword = async (req, res) => {
     try {
