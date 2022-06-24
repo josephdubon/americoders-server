@@ -12,8 +12,9 @@ import {
     createCourse,
     freeEnrollment,
     listComplete,
-    markIncomplete,
+    mailingList,
     markComplete,
+    markIncomplete,
     paidEnrollment,
     publishCourse,
     readCourseData,
@@ -26,8 +27,7 @@ import {
     updateLesson,
     uploadImage,
     uploadVideo,
-    userCourses,
-    mailingList
+    userCourses
 } from '../controllers/course'
 
 // add router
