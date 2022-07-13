@@ -231,6 +231,9 @@ export const addLesson = async (req, res) => {
                     lessons: {
                         title,
                         content,
+                        html,
+                        css,
+                        javascript,
                         video,
                         slug: slugify(title)
                     }
