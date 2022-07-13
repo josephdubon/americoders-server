@@ -19,6 +19,18 @@ const lessonSchema = new mongoose.Schema({
             type: {},
             minlength: 200,
         },
+        html: {
+            type: {},
+            minlength: 25,
+        },
+        css: {
+            type: {},
+            minlength: 25,
+        },
+        javascript: {
+            type: {},
+            minlength: 25,
+        },
         video: {},
         free_preview: {
             type: Boolean,

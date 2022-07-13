@@ -215,7 +215,7 @@ export const addLesson = async (req, res) => {
 
         // get lesson data, content, and media
         const {slug, instructorId} = req.params
-        const {title, content, video} = req.body
+        const {title, content, html, css, javascript, video} = req.body
 
         // confirm user and instructor id's
         if (req.user._id !== instructorId) {
@@ -231,6 +231,9 @@ export const addLesson = async (req, res) => {
                     lessons: {
                         title,
                         content,
+                        html,
+                        css,
+                        javascript,
                         video,
                         slug: slugify(title)
                     }
@@ -274,7 +277,7 @@ export const updateLesson = async (req, res) => {
     try {
         // collect data
         const {slug} = req.params
-        const {_id, title, content, video, free_preview} = req.body
+        const {_id, title, content, html, css, javascript, video, free_preview} = req.body
         const course = await Course.findOne({slug})
             .select('instructor')
             .exec()
@@ -291,6 +294,9 @@ export const updateLesson = async (req, res) => {
                 $set: {
                     'lessons.$.title': title,
                     'lessons.$.content': content,
+                    'lessons.$.html': html,
+                    'lessons.$.css': css,
+                    'lessons.$.javascript': javascript,
                     'lessons.$.video': video,
                     'lessons.$.free_preview': free_preview,
                 },
