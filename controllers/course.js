@@ -294,6 +294,9 @@ export const updateLesson = async (req, res) => {
                 $set: {
                     'lessons.$.title': title,
                     'lessons.$.content': content,
+                    'lessons.$.html': html,
+                    'lessons.$.css': css,
+                    'lessons.$.javascript': javascript,
                     'lessons.$.video': video,
                     'lessons.$.free_preview': free_preview,
                 },
