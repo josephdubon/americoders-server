@@ -277,7 +277,7 @@ export const updateLesson = async (req, res) => {
     try {
         // collect data
         const {slug} = req.params
-        const {_id, title, content, video, free_preview} = req.body
+        const {_id, title, content, html, css, javascript, video, free_preview} = req.body
         const course = await Course.findOne({slug})
             .select('instructor')
             .exec()
