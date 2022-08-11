@@ -4,7 +4,16 @@ import express from 'express'
 import {requireSignIn} from '../middlewares'
 
 // controllers
-import {currentUser, forgotPassword, login, logout, register, resetPassword, sendTestEmail} from '../controllers/auth'
+import {
+    currentUser,
+    forgotPassword,
+    login,
+    logout,
+    register,
+    resetPassword,
+    sendTestEmail,
+    updateUser,
+} from '../controllers/auth'
 
 // add router
 const router = express.Router()
@@ -14,6 +23,8 @@ router.post('/register', register)
 router.post('/login', login)
 router.post('/forgot-password', forgotPassword)
 router.post('/reset-password', resetPassword)
+
+router.post('/update-user', requireSignIn, updateUser)
 
 router.get('/logout', logout)
 router.get('/current-user', requireSignIn, currentUser)
