@@ -106,22 +106,12 @@ export const updateUser = async (req, res) => {
     try {
 
         // collect data/values
-        const {name, email, picture} = req.body
-
-        // validation
-        if (!name) return res.status(400).send('Name is required.')
+        const {name, email} = req.body
 
         // get user
-        const user = await User.findByIdAndUpdate(req.user._id, {
+        const user = await User.findOneAndUpdate({email}, {
             name: name,
-            email: email,
-            picture: picture,
         }).exec()
-
-        // update  user to db
-        // const user = updateUser({
-        //     name, email, picture,
-        // })
 
         // save user to db
         await user.save()
@@ -136,7 +126,6 @@ export const updateUser = async (req, res) => {
         }
     }
 }
-
 
 export const currentUser = async (req, res) => {
     try {
