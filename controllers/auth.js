@@ -106,11 +106,14 @@ export const updateUser = async (req, res) => {
     try {
 
         // collect data/values
-        const {name, email} = req.body
+        const {firstName, lastName, bio, email} = req.body
 
         // get user
         const user = await User.findOneAndUpdate({email}, {
-            name: name,
+            firstName: firstName,
+            lastName: lastName,
+            bio: bio,
+            email: email
         }).exec()
 
         // save user to db
