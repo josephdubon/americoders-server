@@ -4,10 +4,14 @@ const {ObjectId} = Schema
 
 // user schema / model
 const userSchema = new mongoose.Schema({
-        name: {
+        firstName: {
             type: String,
             trim: true,
             required: true,
+        },
+        lastName: { // last name is optional
+            type: String,
+            trim: true,
         },
         email: {
             type: String,
@@ -29,6 +33,13 @@ const userSchema = new mongoose.Schema({
             type: [String], // array for multiple options
             default: ['Subscriber'],
             enum: ['Subscriber', 'Instructor', 'Admin']
+        },
+        bio: {
+            type: String,
+            trim: true,
+            minlength: 3,
+            maxlength: 320,
+            default: '',
         },
         stripe_account_id: '',
         stripe_seller: {},
