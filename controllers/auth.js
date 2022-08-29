@@ -37,7 +37,7 @@ export const register = async (req, res) => {
 
         // register user to db
         const user = new User({
-            name, email, password: hashedPassword,
+            firstName, lastName, bio, email, password: hashedPassword,
         })
 
         // save user to db
