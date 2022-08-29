@@ -18,7 +18,7 @@ const SES = new AWS.SES(awsConfig)
 export const register = async (req, res) => {
     try {
         // collect data/values
-        const {name, email, password} = req.body
+        const {firstName, lastName, bio, email, password} = req.body
 
         // validation
         if (!name) return res.status(400).send('Name is required.')
