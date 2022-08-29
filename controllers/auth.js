@@ -21,7 +21,7 @@ export const register = async (req, res) => {
         const {firstName, lastName, bio, email, password} = req.body
 
         // validation
-        if (!name) return res.status(400).send('Name is required.')
+        if (!firstName) return res.status(400).send('First name is required.')
         if (!password || password.length < 6) {
             return res
                 .status(400)
