@@ -18,10 +18,10 @@ const SES = new AWS.SES(awsConfig)
 export const register = async (req, res) => {
     try {
         // collect data/values
-        const {name, email, password} = req.body
+        const {firstName, lastName, bio, email, password} = req.body
 
         // validation
-        if (!name) return res.status(400).send('Name is required.')
+        if (!firstName) return res.status(400).send('First name is required.')
         if (!password || password.length < 6) {
             return res
                 .status(400)
@@ -37,7 +37,7 @@ export const register = async (req, res) => {
 
         // register user to db
         const user = new User({
-            name, email, password: hashedPassword,
+            firstName, lastName, bio, email, password: hashedPassword,
         })
 
         // save user to db
@@ -106,11 +106,14 @@ export const updateUser = async (req, res) => {
     try {
 
         // collect data/values
-        const {name, email} = req.body
+        const {firstName, lastName, bio, email} = req.body
 
         // get user
         const user = await User.findOneAndUpdate({email}, {
-            name: name,
+            firstName: firstName,
+            lastName: lastName,
+            bio: bio,
+            email: email
         }).exec()
 
         // save user to db
