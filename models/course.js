@@ -68,6 +68,10 @@ const courseSchema = new mongoose.Schema(
       required: true,
       default: new Date('2033'),
     },
+    eventLocation: {
+      type: String,
+      required: true,
+    },
     price: {
       type: Number,
       default: 49.99,
