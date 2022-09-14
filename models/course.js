@@ -1,43 +1,43 @@
 import mongoose from 'mongoose'
 
-const {ObjectId} = mongoose.Schema
+const { ObjectId } = mongoose.Schema
 
 // lesson schema, multiple lessons can be set to one course
 const lessonSchema = new mongoose.Schema({
-        title: {
-            type: String,
-            trim: true,
-            minlength: 3,
-            maxlength: 320,
-            required: true,
-        },
-        slug: {
-            type: String,
-            lowercase: true,
-        },
-        content: {
-            type: {},
-            minlength: 200,
-        },
-        html: {
-            type: {},
-            minlength: 25,
-        },
-        css: {
-            type: {},
-            minlength: 25,
-        },
-        javascript: {
-            type: {},
-            minlength: 25,
-        },
-        video: {},
-        free_preview: {
-            type: Boolean,
-            default: false,
-        },
+    title: {
+      type: String,
+      trim: true,
+      minlength: 3,
+      maxlength: 320,
+      required: true,
     },
-    {timestamps: true} // automatically manage createdAt and updatedAt properties on your documents
+    slug: {
+      type: String,
+      lowercase: true,
+    },
+    content: {
+      type: {},
+      minlength: 200,
+    },
+    html: {
+      type: {},
+      minlength: 25,
+    },
+    css: {
+      type: {},
+      minlength: 25,
+    },
+    javascript: {
+      type: {},
+      minlength: 25,
+    },
+    video: {},
+    free_preview: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
 )
 
 
