@@ -40,7 +40,6 @@ const lessonSchema = new mongoose.Schema({
   { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
 )
 
-
 // course schema, parent to lessonSchema
 const courseSchema = new mongoose.Schema(
     {
