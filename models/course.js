@@ -54,6 +54,13 @@ const courseSchema = new mongoose.Schema(
       type: String,
       lowercase: true,
     },
+    intro: {
+      type: String,
+      trim: true,
+      minlength: 3,
+      maxlength: 200,
+      required: true,
+    },
     description: {
       type: {},
       minlength: 200,
