@@ -200,7 +200,7 @@ export const readCourseData = async (req, res) => {
         const foundCourse = await Course
             .findOne({slug: req.params.slug})
             .populate(
-                'instructor', '_id name')
+                'instructor', '_id lastName firstName')
             .exec()
 
         res.json(foundCourse)
@@ -506,7 +506,7 @@ export const userCourses = async (req, res) => {
 
     // get courses
     const courses = await Course.find({_id: {$in: user.courses}})
-        .populate('instructor', '_id name')
+        .populate('instructor', '_id firstName lastName')
         .exec()
 
     res.json(courses)
