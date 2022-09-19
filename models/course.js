@@ -20,7 +20,7 @@ const eventSchema = new mongoose.Schema(
       type: String,
       trim: true,
       minlength: 3,
-      maxlength: 320,
+      maxlength: 1200,
       required: true,
     },
     startDate: {
