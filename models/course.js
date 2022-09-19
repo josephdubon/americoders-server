@@ -99,7 +99,7 @@ const courseSchema = new mongoose.Schema(
     },
     description: {
       type: {},
-      minlength: 200,
+      minlength: 1200,
       required: true,
     },
     price: {
