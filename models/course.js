@@ -20,7 +20,7 @@ const eventSchema = new mongoose.Schema(
       type: String,
       trim: true,
       minlength: 3,
-      maxlength: 320,
+      maxlength: 1200,
       required: true,
     },
     startDate: {
@@ -99,7 +99,12 @@ const courseSchema = new mongoose.Schema(
     },
     description: {
       type: {},
-      minlength: 200,
+      minlength: 1200,
+      required: true,
+    },
+    ages: {
+      type: String,
+      default: 'All Ages',
       required: true,
     },
     price: {
