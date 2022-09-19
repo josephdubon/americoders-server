@@ -102,19 +102,6 @@ const courseSchema = new mongoose.Schema(
       minlength: 200,
       required: true,
     },
-    eventStartDate: {
-      type: Date,
-      required: true,
-    },
-    eventEndDate: {
-      type: Date,
-      required: true,
-      default: new Date('2033'),
-    },
-    eventLocation: {
-      type: String,
-      required: true,
-    },
     price: {
       type: Number,
       default: 49.99,
