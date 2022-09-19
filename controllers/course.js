@@ -209,6 +209,102 @@ export const readCourseData = async (req, res) => {
   }
 }
 
+export const addEvent = async (req, res) => {
+  try {
+    console.log('hit add event api!')
+
+    // get event data, content, and media
+    const { slug, instructorId } = req.params
+    const { title, description, startDate, endDate, location } = req.body
+
+    // confirm user and instructor id's
+    if (req.user._id !== instructorId) {
+      return res.status(400).send('Unauthorized')
+    }
+
+    // update event
+    const updated = await Course.findOneAndUpdate(
+      { slug },
+      // updated data
+      {
+        $push: {
+          event: {
+            title, description, startDate, endDate, location,
+            slug: slugify(title)
+          }
+        }
+      },
+      { new: true }
+    )
+      .populate('instructor', '_id firstName lastName') // populate instructor fields: _id and name
+      .exec()
+
+    // send data
+    res.json(updated)
+
+  } catch (err) {
+    console.log('ADD EVENT: ', err)
+    return res.status(400).send('Add event failed')
+  }
+}
+
+export const removeEvent = async (req, res) => {
+  // collect slug from url params
+  const { slug, eventId } = req.params
+
+  // find course by slug
+  const course = await Course.findOne({ slug }).exec()
+
+  // if logged in user does not match course instructor id send error
+  if (req.user._id != course.instructor) {
+    return res.status(400).send('Unauthorized.')
+  }
+
+  // pull event from course and delete from server
+  const deletedEvent = await Course.findByIdAndUpdate(course._id, {
+    $pull: { event: { _id: eventId } } // pull event out of array by id
+  }).exec()
+
+  res.json({ ok: true })
+}
+
+export const updateEvent = async (req, res) => {
+  try {
+    // collect data
+    const { slug } = req.params
+    const { _id, title, description, startDate, endDate, location } = req.body
+    const course = await Course.findOne({ slug })
+      .select('instructor')
+      .exec()
+
+    // verify instructor id
+    if (course.instructor._id != req.user._id) {
+      return res.status(400).send('Unauthorized')
+    }
+
+    // update event
+    const updated = await Course.updateOne(
+      { 'event._id': _id },
+      {
+        $set: {
+          'event.$.title': title,
+          'event.$.description': description,
+          'event.$.startDate': startDate,
+          'event.$.endDate': endDate,
+          'event.$.location': location,
+        },
+      },
+      { new: true })
+      .exec()
+
+    console.log('updated', updated)
+    res.json({ ok: true })
+  } catch (err) {
+    console.log('eventUpdated: ', err)
+    return res.status(400).send('Update event attempt failed.')
+  }
+}
+
 export const addLesson = async (req, res) => {
   try {
     // console.log('hit add lesson api!')
@@ -241,7 +337,7 @@ export const addLesson = async (req, res) => {
       },
       { new: true }
     )
-      .populate('instructor', '_id name') // populate instructor fields: _id and name
+      .populate('instructor', '_id firstName lastName') // populate instructor fields: _id and name
       .exec()
 
     // send data
@@ -365,7 +461,7 @@ export const courses = async (req, res) => {
   try {
     // make request to get all courses by instructor
     const allCourses = await Course.find({ published: true })
-      .populate('instructor', '_id name')
+      .populate('instructor', '_id firstName lastName')
       .exec()
 
     res.json(allCourses)

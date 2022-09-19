@@ -2,6 +2,42 @@ import mongoose from 'mongoose'
 
 const { ObjectId } = mongoose.Schema
 
+// event schema, parent to courseSchema
+const eventSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      trim: true,
+      minlength: 3,
+      maxlength: 320,
+      required: true,
+    },
+    slug: {
+      type: String,
+      lowercase: true,
+    },
+    description: {
+      type: String,
+      trim: true,
+      minlength: 3,
+      maxlength: 320,
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+    },
+    location: {
+      type: String,
+      required: true,
+    },
+  },
+  { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
+)
+
 // lesson schema, multiple lessons can be set to one course
 const lessonSchema = new mongoose.Schema({
     title: {
@@ -66,19 +102,6 @@ const courseSchema = new mongoose.Schema(
       minlength: 200,
       required: true,
     },
-    eventStartDate: {
-      type: Date,
-      required: true,
-    },
-    eventEndDate: {
-      type: Date,
-      required: true,
-      default: new Date('2033'),
-    },
-    eventLocation: {
-      type: String,
-      required: true,
-    },
     price: {
       type: Number,
       default: 49.99,
@@ -98,7 +121,8 @@ const courseSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    lessons: [lessonSchema] // each lesson in array must meet requirements set from lesson schema
+    lessons: [lessonSchema], // each lesson in array must meet requirements set from lesson schema
+    event: [eventSchema], // each event in array must meet requirements set from event schema
   },
   { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
 )

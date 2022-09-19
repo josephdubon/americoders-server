@@ -2,32 +2,35 @@ import express from 'express'
 import formidable from 'express-formidable'
 
 // middleware
-import {isEnrolled, isInstructor, requireSignIn} from '../middlewares'
+import { isEnrolled, isInstructor, requireSignIn } from '../middlewares'
 
 // controllers
 import {
-    addLesson,
-    checkEnrollment,
-    courses,
-    createCourse,
-    freeEnrollment,
-    listComplete,
-    mailingList,
-    markComplete,
-    markIncomplete,
-    paidEnrollment,
-    publishCourse,
-    readCourseData,
-    removeImage,
-    removeLesson,
-    removeVideo,
-    stripeSuccess,
-    unpublishCourse,
-    updateCourse,
-    updateLesson,
-    uploadImage,
-    uploadVideo,
-    userCourses
+  addLesson,
+  addEvent,
+  checkEnrollment,
+  courses,
+  createCourse,
+  freeEnrollment,
+  listComplete,
+  mailingList,
+  markComplete,
+  markIncomplete,
+  paidEnrollment,
+  publishCourse,
+  readCourseData,
+  removeImage,
+  removeLesson,
+  removeEvent,
+  removeVideo,
+  stripeSuccess,
+  unpublishCourse,
+  updateCourse,
+  updateLesson,
+  updateEvent,
+  uploadImage,
+  uploadVideo,
+  userCourses
 } from '../controllers/course'
 
 // add router
@@ -60,6 +63,11 @@ router.put('/course/unpublish/:courseId', requireSignIn, unpublishCourse)
 router.post('/course/lesson/:slug/:instructorId', requireSignIn, addLesson) // must be a logged-in instructor for request
 router.put('/course/lesson/:slug/:instructorId', requireSignIn, updateLesson) // must be a logged-in instructor for request
 router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
+
+// event routes
+router.post('/course/event/:slug/:instructorId', requireSignIn, addEvent) // must be a logged-in instructor for request
+router.put('/course/event/:slug/:instructorId', requireSignIn, updateEvent) // must be a logged-in instructor for request
+router.put('/course/:slug/:eventId', requireSignIn, removeEvent)
 
 // enrollment routes
 router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
