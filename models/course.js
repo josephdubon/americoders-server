@@ -121,7 +121,8 @@ const courseSchema = new mongoose.Schema(
       ref: 'User',
       required: true,
     },
-    lessons: [lessonSchema] // each lesson in array must meet requirements set from lesson schema
+    lessons: [lessonSchema], // each lesson in array must meet requirements set from lesson schema
+    event: [eventSchema], // each event in array must meet requirements set from event schema
   },
   { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
 )
