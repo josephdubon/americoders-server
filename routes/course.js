@@ -2,32 +2,35 @@ import express from 'express'
 import formidable from 'express-formidable'
 
 // middleware
-import {isEnrolled, isInstructor, requireSignIn} from '../middlewares'
+import { isEnrolled, isInstructor, requireSignIn } from '../middlewares'
 
 // controllers
 import {
-    addLesson,
-    checkEnrollment,
-    courses,
-    createCourse,
-    freeEnrollment,
-    listComplete,
-    mailingList,
-    markComplete,
-    markIncomplete,
-    paidEnrollment,
-    publishCourse,
-    readCourseData,
-    removeImage,
-    removeLesson,
-    removeVideo,
-    stripeSuccess,
-    unpublishCourse,
-    updateCourse,
-    updateLesson,
-    uploadImage,
-    uploadVideo,
-    userCourses
+  addLesson,
+  addEvent,
+  checkEnrollment,
+  courses,
+  createCourse,
+  freeEnrollment,
+  listComplete,
+  mailingList,
+  markComplete,
+  markIncomplete,
+  paidEnrollment,
+  publishCourse,
+  readCourseData,
+  removeImage,
+  removeLesson,
+  removeEvent,
+  removeVideo,
+  stripeSuccess,
+  unpublishCourse,
+  updateCourse,
+  updateLesson,
+  updateEvent,
+  uploadImage,
+  uploadVideo,
+  userCourses
 } from '../controllers/course'
 
 // add router
