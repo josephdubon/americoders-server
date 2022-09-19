@@ -102,6 +102,11 @@ const courseSchema = new mongoose.Schema(
       minlength: 1200,
       required: true,
     },
+    ages: {
+      type: String,
+      default: 'All Ages',
+      required: true,
+    },
     price: {
       type: Number,
       default: 49.99,
