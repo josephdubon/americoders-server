@@ -461,7 +461,7 @@ export const courses = async (req, res) => {
   try {
     // make request to get all courses by instructor
     const allCourses = await Course.find({ published: true })
-      .populate('instructor', '_id name')
+      .populate('instructor', '_id firstName lastName')
       .exec()
 
     res.json(allCourses)
