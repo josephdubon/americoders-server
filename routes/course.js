@@ -64,6 +64,11 @@ router.post('/course/lesson/:slug/:instructorId', requireSignIn, addLesson) // m
 router.put('/course/lesson/:slug/:instructorId', requireSignIn, updateLesson) // must be a logged-in instructor for request
 router.put('/course/:slug/:lessonId', requireSignIn, removeLesson)
 
+// event routes
+router.post('/course/event/:slug/:instructorId', requireSignIn, addEvent) // must be a logged-in instructor for request
+router.put('/course/event/:slug/:instructorId', requireSignIn, updateEvent) // must be a logged-in instructor for request
+router.put('/course/:slug/:eventId', requireSignIn, removeEvent)
+
 // enrollment routes
 router.get('/check-enrollment/:courseId', requireSignIn, checkEnrollment)
 router.post('/free-enrollment/:courseId', requireSignIn, freeEnrollment)
