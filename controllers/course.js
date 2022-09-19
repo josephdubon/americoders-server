@@ -337,7 +337,7 @@ export const addLesson = async (req, res) => {
       },
       { new: true }
     )
-      .populate('instructor', '_id name') // populate instructor fields: _id and name
+      .populate('instructor', '_id firstName lastName') // populate instructor fields: _id and name
       .exec()
 
     // send data
