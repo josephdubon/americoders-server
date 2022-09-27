@@ -313,7 +313,8 @@ export const addLesson = async (req, res) => {
 
     // get lesson data, content, and media
     const { slug, instructorId } = req.params
-    const { title, content, html, css, javascript, video } = req.body
+    const { title, content, html, css, javascript, earsketch, video } =
+      req.body
 
     // confirm user and instructor id's
     if (req.user._id !== instructorId) {
@@ -332,6 +333,7 @@ export const addLesson = async (req, res) => {
             html,
             css,
             javascript,
+            earsketch,
             video,
             slug: slugify(title),
           },
