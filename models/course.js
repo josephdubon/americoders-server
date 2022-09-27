@@ -68,6 +68,10 @@ const lessonSchema = new mongoose.Schema(
       type: {},
       minlength: 25,
     },
+    earsketch: {
+      type: Boolean,
+      default: false,
+    },
     video: {},
     free_preview: {
       type: Boolean,
