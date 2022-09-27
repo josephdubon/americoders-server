@@ -376,10 +376,9 @@ export const updateLesson = async (req, res) => {
   try {
     // collect data
     const { slug } = req.params
-    const { _id, title, content, html, css, javascript, video, free_preview } = req.body
-    const course = await Course.findOne({ slug })
-      .select('instructor')
-      .exec()
+    const { _id, title, content, html, css, javascript, earsketch, video, free_preview } =
+      req.body
+    const course = await Course.findOne({ slug }).select('instructor').exec()
 
     // verify instructor id
     if (course.instructor._id != req.user._id) {
@@ -396,6 +395,7 @@ export const updateLesson = async (req, res) => {
           'lessons.$.html': html,
           'lessons.$.css': css,
           'lessons.$.javascript': javascript,
+          'lessons.$.earsketch': earsketch,
           'lessons.$.video': video,
           'lessons.$.free_preview': free_preview,
         },
