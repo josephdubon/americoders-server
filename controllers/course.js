@@ -17,7 +17,7 @@ const awsConfig = {
   accessKeyId: process.env.AWS_ACESS,
   secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   region: process.env.AWS_REGION,
-  apiVersion: process.env.AWS_API_VERSION
+  apiVersion: process.env.AWS_API_VERSION,
 }
 
 const S3 = new AWS.S3(awsConfig)
@@ -31,8 +31,10 @@ export const uploadImage = async (req, res) => {
     if (!image) return res.status(400).send('No image')
 
     // prepare the image
-    const base64Data = new Buffer
-      .from(image.replace(/^data:image\/\w+;base64,/, ''), 'base64')
+    const base64Data = new Buffer.from(
+      image.replace(/^data:image\/\w+;base64,/, ''),
+      'base64'
+    )
 
     // destructure image payload
     const type = image.split(';')[0].split('/')[1]
@@ -121,17 +123,15 @@ export const uploadVideo = async (req, res) => {
 export const removeVideo = async (req, res) => {
   try {
     // get video data from s3
-    const {
-      Bucket,
-      Key
-    } = req.body
+    const { Bucket, Key } = req.body
 
     // if nothing to destructure return error
     if (!Bucket && !Key) return res.status(400).send('No video')
 
     // image params
     const params = {
-      Bucket, Key,
+      Bucket,
+      Key,
     }
 
     // send remove request to s3
@@ -151,11 +151,12 @@ export const createCourse = async (req, res) => {
   try {
     // console.log('CREATE COURSE API HIT!')
     const courseExists = await Course.findOne({
-      slug: slugify(req.body.name.toLowerCase()) // slug is auto generated replacing spaces with a dash '-'
+      slug: slugify(req.body.name.toLowerCase()), // slug is auto generated replacing spaces with a dash '-'
     })
 
     // if the course exists send user error
-    if (courseExists) return res.status(400).send('Title matches existing course.')
+    if (courseExists)
+      return res.status(400).send('Title matches existing course.')
 
     // create course and send to db
     const course = await new Course({
@@ -191,16 +192,16 @@ export const updateCourse = async (req, res) => {
     // save updates
     res.json(updated)
   } catch (err) {
-    return res.status(400).send('Update create failed. Try again.', err.message)
+    return res
+      .status(400)
+      .send('Update create failed. Try again.', err.message)
   }
 }
 
 export const readCourseData = async (req, res) => {
   try {
-    const foundCourse = await Course
-      .findOne({ slug: req.params.slug })
-      .populate(
-        'instructor', '_id lastName firstName')
+    const foundCourse = await Course.findOne({ slug: req.params.slug })
+      .populate('instructor', '_id lastName firstName')
       .exec()
 
     res.json(foundCourse)
@@ -229,10 +230,14 @@ export const addEvent = async (req, res) => {
       {
         $push: {
           event: {
-            title, description, startDate, endDate, location,
-            slug: slugify(title)
-          }
-        }
+            title,
+            description,
+            startDate,
+            endDate,
+            location,
+            slug: slugify(title),
+          },
+        },
       },
       { new: true }
     )
@@ -241,7 +246,6 @@ export const addEvent = async (req, res) => {
 
     // send data
     res.json(updated)
-
   } catch (err) {
     console.log('ADD EVENT: ', err)
     return res.status(400).send('Add event failed')
@@ -262,7 +266,7 @@ export const removeEvent = async (req, res) => {
 
   // pull event from course and delete from server
   const deletedEvent = await Course.findByIdAndUpdate(course._id, {
-    $pull: { event: { _id: eventId } } // pull event out of array by id
+    $pull: { event: { _id: eventId } }, // pull event out of array by id
   }).exec()
 
   res.json({ ok: true })
@@ -273,9 +277,7 @@ export const updateEvent = async (req, res) => {
     // collect data
     const { slug } = req.params
     const { _id, title, description, startDate, endDate, location } = req.body
-    const course = await Course.findOne({ slug })
-      .select('instructor')
-      .exec()
+    const course = await Course.findOne({ slug }).select('instructor').exec()
 
     // verify instructor id
     if (course.instructor._id != req.user._id) {
@@ -294,8 +296,8 @@ export const updateEvent = async (req, res) => {
           'event.$.location': location,
         },
       },
-      { new: true })
-      .exec()
+      { new: true }
+    ).exec()
 
     console.log('updated', updated)
     res.json({ ok: true })
@@ -331,9 +333,9 @@ export const addLesson = async (req, res) => {
             css,
             javascript,
             video,
-            slug: slugify(title)
-          }
-        }
+            slug: slugify(title),
+          },
+        },
       },
       { new: true }
     )
@@ -342,7 +344,6 @@ export const addLesson = async (req, res) => {
 
     // send data
     res.json(updated)
-
   } catch (err) {
     console.log('ADD LESSON: ', err)
     return res.status(400).send('Add lesson failed')
@@ -363,7 +364,7 @@ export const removeLesson = async (req, res) => {
 
   // pull lesson from course and delete from server
   const deletedLesson = await Course.findByIdAndUpdate(course._id, {
-    $pull: { lessons: { _id: lessonId } } // pull lesson out of array by id
+    $pull: { lessons: { _id: lessonId } }, // pull lesson out of array by id
   }).exec()
 
   res.json({ ok: true })
@@ -397,8 +398,8 @@ export const updateLesson = async (req, res) => {
           'lessons.$.free_preview': free_preview,
         },
       },
-      { new: true })
-      .exec()
+      { new: true }
+    ).exec()
 
     console.log('updated', updated)
     res.json({ ok: true })
@@ -423,8 +424,8 @@ export const publishCourse = async (req, res) => {
     let course = await Course.findByIdAndUpdate(
       courseId,
       { published: true },
-      { new: true })
-      .exec()
+      { new: true }
+    ).exec()
 
     res.json(course)
   } catch (err) {
@@ -448,8 +449,8 @@ export const unpublishCourse = async (req, res) => {
     let course = await Course.findByIdAndUpdate(
       courseId,
       { published: false },
-      { new: true })
-      .exec()
+      { new: true }
+    ).exec()
     res.json(course)
   } catch (err) {
     console.log(err)
@@ -465,7 +466,6 @@ export const courses = async (req, res) => {
       .exec()
 
     res.json(allCourses)
-
   } catch (err) {
     console.log('Get courses failed.')
   }
@@ -483,8 +483,7 @@ export const checkEnrollment = async (req, res) => {
   }
   res.json({
     status: ids.includes(courseId),
-    course: await Course.findById(courseId)
-      .exec(),
+    course: await Course.findById(courseId).exec(),
   })
 }
 
@@ -494,11 +493,13 @@ export const freeEnrollment = async (req, res) => {
     const course = await Course.findById(req.params.courseId).exec()
     if (course.paid) return
 
-    const result = await User.findByIdAndUpdate(req.user._id, {
+    const result = await User.findByIdAndUpdate(
+      req.user._id,
+      {
         $addToSet: { courses: course._id },
       },
-      { new: true })
-      .exec()
+      { new: true }
+    ).exec()
 
     res.json({
       message: 'Congratulations! You have successfully enrolled.',
@@ -512,7 +513,6 @@ export const freeEnrollment = async (req, res) => {
 
 export const paidEnrollment = async (req, res) => {
   try {
-
     console.log('paid course api hit!')
 
     // check if course is free or paid
@@ -523,7 +523,7 @@ export const paidEnrollment = async (req, res) => {
     if (!course.paid) return // if course is not a paid course, show course
 
     // application fee 30%
-    const fee = (course.price * 30 / 100)
+    const fee = (course.price * 30) / 100
 
     // create Stripe session
     // https://stripe.com/docs/api/checkout/sessions/create?lang=node
@@ -531,15 +531,18 @@ export const paidEnrollment = async (req, res) => {
       payment_method_types: ['card'],
 
       // purchase details
-      line_items: [{
-        name: course.name,
-        amount: Math.round(course.price.toFixed(2) * 100),  // get first 2 char
-        currency: 'usd', quantity: 1,
-      }],
+      line_items: [
+        {
+          name: course.name,
+          amount: Math.round(course.price.toFixed(2) * 100), // get first 2 char
+          currency: 'usd',
+          quantity: 1,
+        },
+      ],
 
       // charge buyer and transfer remaining balance to seller (after fee)
       payment_intent_data: {
-        application_fee_amount: Math.round(fee.toFixed(2) * 100),  // get first 2 char
+        application_fee_amount: Math.round(fee.toFixed(2) * 100), // get first 2 char
         transfer_data: {
           destination: course.instructor.stripe_account_id,
         },
@@ -554,7 +557,9 @@ export const paidEnrollment = async (req, res) => {
     console.log('SESSION ID => ', session)
 
     // update user data
-    await User.findByIdAndUpdate(req.user._id, { stripeSession: session }).exec()
+    await User.findByIdAndUpdate(req.user._id, {
+      stripeSession: session,
+    }).exec()
 
     res.send(session.id)
   } catch (err) {
@@ -587,7 +592,6 @@ export const stripeSuccess = async (req, res) => {
         $addToSet: { courses: course._id },
         $set: { stripeSession: {} },
       }).exec()
-
     }
     res.json({ success: true, course })
   } catch (err) {
@@ -620,12 +624,14 @@ export const markComplete = async (req, res) => {
 
   if (existing) {
     // update lessons array list
-    const updated = await Completed.findOneAndUpdate({
+    const updated = await Completed.findOneAndUpdate(
+      {
         user: req.user._id,
         course: courseId,
-      }, {
-        $addToSet: { lessons: lessonId }
       },
+      {
+        $addToSet: { lessons: lessonId },
+      }
     ).exec()
 
     res.json({ ok: true })
@@ -646,7 +652,7 @@ export const listComplete = async (req, res) => {
     // collect data
     const list = await Completed.findOne({
       user: req.user._id,
-      course: req.body.courseId
+      course: req.body.courseId,
     }).exec()
 
     list && res.json(list.lessons)
@@ -680,25 +686,29 @@ export const mailingList = async (req, res) => {
   try {
     // make request to get all courses by instructor
     const data = {
-      'contacts': [{
-        'email': `${req.body.email}`,
-      }],
-      'list_ids': [`${process.env.SENDGRID_MAILING_ID}`]
+      contacts: [
+        {
+          email: `${req.body.email}`,
+        },
+      ],
+      list_ids: [`${process.env.SENDGRID_MAILING_ID}`],
     }
 
     const request = {
-      url: `/v3/marketing/contacts`, method: 'PUT', body: data
+      url: `/v3/marketing/contacts`,
+      method: 'PUT',
+      body: data,
     }
 
-    client.request(request)
+    client
+      .request(request)
       .then(([response, body]) => {
         console.log(response.statusCode)
         console.log(response.body)
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error)
       })
-
   } catch (err) {
     console.log('Mailing list failed.')
   }
