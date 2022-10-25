@@ -312,7 +312,7 @@ export const addLesson = async (req, res) => {
 
     // get lesson data, content, and media
     const { slug, instructorId } = req.params
-    const { title, content, html, css, javascript, earsketch, video } =
+    const { title, content, html, css, javascript, python, earsketch, video } =
       req.body
 
     // confirm user and instructor id's
@@ -332,6 +332,7 @@ export const addLesson = async (req, res) => {
             html,
             css,
             javascript,
+            python,
             earsketch,
             video,
             slug: slugify(title),
@@ -383,6 +384,7 @@ export const updateLesson = async (req, res) => {
       html,
       css,
       javascript,
+      python,
       earsketch,
       video,
       free_preview,
@@ -405,6 +407,7 @@ export const updateLesson = async (req, res) => {
           'lessons.$.html': html,
           'lessons.$.css': css,
           'lessons.$.javascript': javascript,
+          'lessons.$.python': python,
           'lessons.$.earsketch': earsketch,
           'lessons.$.video': video,
           'lessons.$.free_preview': free_preview,
