@@ -33,7 +33,7 @@ export const uploadImage = async (req, res) => {
     // prepare the image
     const base64Data = new Buffer.from(
       image.replace(/^data:image\/\w+;base64,/, ''),
-      'base64'
+      'base64',
     )
 
     // destructure image payload
@@ -192,17 +192,15 @@ export const updateCourse = async (req, res) => {
     // save updates
     res.json(updated)
   } catch (err) {
-    return res
-      .status(400)
-      .send('Update create failed. Try again.', err.message)
+    return res.status(400).send('Update create failed. Try again.', err.message)
   }
 }
 
 export const readCourseData = async (req, res) => {
   try {
-    const foundCourse = await Course.findOne({ slug: req.params.slug })
-      .populate('instructor', '_id lastName firstName')
-      .exec()
+    const foundCourse = await Course.findOne({ slug: req.params.slug }).
+      populate('instructor', '_id lastName firstName').
+      exec()
 
     res.json(foundCourse)
   } catch (err) {
@@ -239,9 +237,10 @@ export const addEvent = async (req, res) => {
           },
         },
       },
-      { new: true }
-    )
-      .populate('instructor', '_id firstName lastName') // populate instructor fields: _id and name
+      { new: true },
+    ).
+      populate('instructor',
+        '_id firstName lastName') // populate instructor fields: _id and name
       .exec()
 
     // send data
@@ -296,7 +295,7 @@ export const updateEvent = async (req, res) => {
           'event.$.location': location,
         },
       },
-      { new: true }
+      { new: true },
     ).exec()
 
     console.log('updated', updated)
@@ -313,7 +312,7 @@ export const addLesson = async (req, res) => {
 
     // get lesson data, content, and media
     const { slug, instructorId } = req.params
-    const { title, content, html, css, javascript, earsketch, video } =
+    const { title, content, html, css, javascript, python, earsketch, video } =
       req.body
 
     // confirm user and instructor id's
@@ -333,15 +332,17 @@ export const addLesson = async (req, res) => {
             html,
             css,
             javascript,
+            python,
             earsketch,
             video,
             slug: slugify(title),
           },
         },
       },
-      { new: true }
-    )
-      .populate('instructor', '_id firstName lastName') // populate instructor fields: _id and name
+      { new: true },
+    ).
+      populate('instructor',
+        '_id firstName lastName') // populate instructor fields: _id and name
       .exec()
 
     // send data
@@ -376,7 +377,18 @@ export const updateLesson = async (req, res) => {
   try {
     // collect data
     const { slug } = req.params
-    const { _id, title, content, html, css, javascript, earsketch, video, free_preview } =
+    const {
+      _id,
+      title,
+      content,
+      html,
+      css,
+      javascript,
+      python,
+      earsketch,
+      video,
+      free_preview,
+    } =
       req.body
     const course = await Course.findOne({ slug }).select('instructor').exec()
 
@@ -395,12 +407,13 @@ export const updateLesson = async (req, res) => {
           'lessons.$.html': html,
           'lessons.$.css': css,
           'lessons.$.javascript': javascript,
+          'lessons.$.python': python,
           'lessons.$.earsketch': earsketch,
           'lessons.$.video': video,
           'lessons.$.free_preview': free_preview,
         },
       },
-      { new: true }
+      { new: true },
     ).exec()
 
     console.log('updated', updated)
@@ -415,9 +428,9 @@ export const publishCourse = async (req, res) => {
   try {
     const { courseId } = req.params
     // find post
-    const courseFound = await Course.findById(courseId)
-      .select('instructor')
-      .exec()
+    const courseFound = await Course.findById(courseId).
+      select('instructor').
+      exec()
     // is owner?
     if (req.user._id != courseFound.instructor._id) {
       return res.status(400).send('Unauthorized')
@@ -426,7 +439,7 @@ export const publishCourse = async (req, res) => {
     let course = await Course.findByIdAndUpdate(
       courseId,
       { published: true },
-      { new: true }
+      { new: true },
     ).exec()
 
     res.json(course)
@@ -440,9 +453,9 @@ export const unpublishCourse = async (req, res) => {
   try {
     const { courseId } = req.params
     // find post
-    const courseFound = await Course.findById(courseId)
-      .select('instructor')
-      .exec()
+    const courseFound = await Course.findById(courseId).
+      select('instructor').
+      exec()
     // is owner?
     if (req.user._id != courseFound.instructor._id) {
       return res.status(400).send('Unauthorized')
@@ -451,7 +464,7 @@ export const unpublishCourse = async (req, res) => {
     let course = await Course.findByIdAndUpdate(
       courseId,
       { published: false },
-      { new: true }
+      { new: true },
     ).exec()
     res.json(course)
   } catch (err) {
@@ -463,9 +476,9 @@ export const unpublishCourse = async (req, res) => {
 export const courses = async (req, res) => {
   try {
     // make request to get all courses by instructor
-    const allCourses = await Course.find({ published: true })
-      .populate('instructor', '_id firstName lastName')
-      .exec()
+    const allCourses = await Course.find({ published: true }).
+      populate('instructor', '_id firstName lastName').
+      exec()
 
     res.json(allCourses)
   } catch (err) {
@@ -500,7 +513,7 @@ export const freeEnrollment = async (req, res) => {
       {
         $addToSet: { courses: course._id },
       },
-      { new: true }
+      { new: true },
     ).exec()
 
     res.json({
@@ -518,9 +531,9 @@ export const paidEnrollment = async (req, res) => {
     console.log('paid course api hit!')
 
     // check if course is free or paid
-    const course = await Course.findById(req.params.courseId)
-      .populate('instructor')
-      .exec()
+    const course = await Course.findById(req.params.courseId).
+      populate('instructor').
+      exec()
 
     if (!course.paid) return // if course is not a paid course, show course
 
@@ -583,7 +596,7 @@ export const stripeSuccess = async (req, res) => {
 
     // retrieve stripe session
     const session = await stripe.checkout.sessions.retrieve(
-      user.stripeSession.id
+      user.stripeSession.id,
     )
 
     console.log('STRIPE SUCCESS', session)
@@ -607,9 +620,9 @@ export const userCourses = async (req, res) => {
   const user = await User.findById(req.user._id).exec()
 
   // get courses
-  const courses = await Course.find({ _id: { $in: user.courses } })
-    .populate('instructor', '_id firstName lastName')
-    .exec()
+  const courses = await Course.find({ _id: { $in: user.courses } }).
+    populate('instructor', '_id firstName lastName').
+    exec()
 
   res.json(courses)
 }
@@ -633,7 +646,7 @@ export const markComplete = async (req, res) => {
       },
       {
         $addToSet: { lessons: lessonId },
-      }
+      },
     ).exec()
 
     res.json({ ok: true })
@@ -676,7 +689,7 @@ export const markIncomplete = async (req, res) => {
       },
       {
         $pull: { lessons: lessonId },
-      }
+      },
     ).exec()
     res.json({ ok: true })
   } catch (err) {
@@ -702,15 +715,12 @@ export const mailingList = async (req, res) => {
       body: data,
     }
 
-    client
-      .request(request)
-      .then(([response, body]) => {
-        console.log(response.statusCode)
-        console.log(response.body)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
+    client.request(request).then(([response, body]) => {
+      console.log(response.statusCode)
+      console.log(response.body)
+    }).catch((error) => {
+      console.error(error)
+    })
   } catch (err) {
     console.log('Mailing list failed.')
   }

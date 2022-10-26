@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const { ObjectId } = mongoose.Schema;
+const { ObjectId } = mongoose.Schema
 
 // event schema, parent to courseSchema
 const eventSchema = new mongoose.Schema(
@@ -35,8 +35,8 @@ const eventSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
-);
+  { timestamps: true }, // automatically manage createdAt and updatedAt properties on your documents
+)
 
 // lesson schema, multiple lessons can be set to one course
 const lessonSchema = new mongoose.Schema(
@@ -68,6 +68,10 @@ const lessonSchema = new mongoose.Schema(
       type: {},
       minlength: 25,
     },
+    python: {
+      type: {},
+      minlength: 25,
+    },
     earsketch: {
       type: Boolean,
       default: false,
@@ -78,8 +82,8 @@ const lessonSchema = new mongoose.Schema(
       default: false,
     },
   },
-  { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
-);
+  { timestamps: true }, // automatically manage createdAt and updatedAt properties on your documents
+)
 
 // course schema, parent to lessonSchema
 const courseSchema = new mongoose.Schema(
@@ -109,7 +113,7 @@ const courseSchema = new mongoose.Schema(
     },
     ages: {
       type: String,
-      default: "All Ages",
+      default: 'All Ages',
       required: true,
     },
     price: {
@@ -129,14 +133,14 @@ const courseSchema = new mongoose.Schema(
     instructor: {
       // make relationship instructor -> lessons
       type: ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
     lessons: [lessonSchema], // each lesson in array must meet requirements set from lesson schema
     event: [eventSchema], // each event in array must meet requirements set from event schema
   },
-  { timestamps: true } // automatically manage createdAt and updatedAt properties on your documents
-);
+  { timestamps: true }, // automatically manage createdAt and updatedAt properties on your documents
+)
 
 // create the schema into a model
-export default mongoose.model("Course", courseSchema);
+export default mongoose.model('Course', courseSchema)
