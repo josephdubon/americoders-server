@@ -4,4 +4,4 @@ attributes:
     # regular, large, xlarge
     instanceType: large
     editor:
-      type: Idea
+      type: Fleet
