@@ -198,9 +198,9 @@ export const updateCourse = async (req, res) => {
 
 export const readCourseData = async (req, res) => {
   try {
-    const foundCourse = await Course.findOne({ slug: req.params.slug }).
-      populate('instructor', '_id lastName firstName').
-      exec()
+    const foundCourse = await Course.findOne({ slug: req.params.slug })
+      .populate('instructor', '_id lastName firstName')
+      .exec()
 
     res.json(foundCourse)
   } catch (err) {
@@ -238,9 +238,8 @@ export const addEvent = async (req, res) => {
         },
       },
       { new: true },
-    ).
-      populate('instructor',
-        '_id firstName lastName') // populate instructor fields: _id and name
+    )
+      .populate('instructor', '_id firstName lastName') // populate instructor fields: _id and name
       .exec()
 
     // send data
@@ -340,9 +339,8 @@ export const addLesson = async (req, res) => {
         },
       },
       { new: true },
-    ).
-      populate('instructor',
-        '_id firstName lastName') // populate instructor fields: _id and name
+    )
+      .populate('instructor', '_id firstName lastName') // populate instructor fields: _id and name
       .exec()
 
     // send data
@@ -388,8 +386,7 @@ export const updateLesson = async (req, res) => {
       earsketch,
       video,
       free_preview,
-    } =
-      req.body
+    } = req.body
     const course = await Course.findOne({ slug }).select('instructor').exec()
 
     // verify instructor id
@@ -428,9 +425,9 @@ export const publishCourse = async (req, res) => {
   try {
     const { courseId } = req.params
     // find post
-    const courseFound = await Course.findById(courseId).
-      select('instructor').
-      exec()
+    const courseFound = await Course.findById(courseId)
+      .select('instructor')
+      .exec()
     // is owner?
     if (req.user._id != courseFound.instructor._id) {
       return res.status(400).send('Unauthorized')
@@ -453,9 +450,9 @@ export const unpublishCourse = async (req, res) => {
   try {
     const { courseId } = req.params
     // find post
-    const courseFound = await Course.findById(courseId).
-      select('instructor').
-      exec()
+    const courseFound = await Course.findById(courseId)
+      .select('instructor')
+      .exec()
     // is owner?
     if (req.user._id != courseFound.instructor._id) {
       return res.status(400).send('Unauthorized')
@@ -476,9 +473,9 @@ export const unpublishCourse = async (req, res) => {
 export const courses = async (req, res) => {
   try {
     // make request to get all courses by instructor
-    const allCourses = await Course.find({ published: true }).
-      populate('instructor', '_id firstName lastName').
-      exec()
+    const allCourses = await Course.find({ published: true })
+      .populate('instructor', '_id firstName lastName')
+      .exec()
 
     res.json(allCourses)
   } catch (err) {
@@ -531,9 +528,9 @@ export const paidEnrollment = async (req, res) => {
     console.log('paid course api hit!')
 
     // check if course is free or paid
-    const course = await Course.findById(req.params.courseId).
-      populate('instructor').
-      exec()
+    const course = await Course.findById(req.params.courseId)
+      .populate('instructor')
+      .exec()
 
     if (!course.paid) return // if course is not a paid course, show course
 
@@ -620,9 +617,9 @@ export const userCourses = async (req, res) => {
   const user = await User.findById(req.user._id).exec()
 
   // get courses
-  const courses = await Course.find({ _id: { $in: user.courses } }).
-    populate('instructor', '_id firstName lastName').
-    exec()
+  const courses = await Course.find({ _id: { $in: user.courses } })
+    .populate('instructor', '_id firstName lastName')
+    .exec()
 
   res.json(courses)
 }
@@ -715,12 +712,15 @@ export const mailingList = async (req, res) => {
       body: data,
     }
 
-    client.request(request).then(([response, body]) => {
-      console.log(response.statusCode)
-      console.log(response.body)
-    }).catch((error) => {
-      console.error(error)
-    })
+    client
+      .request(request)
+      .then(([response, body]) => {
+        console.log(response.statusCode)
+        console.log(response.body)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
   } catch (err) {
     console.log('Mailing list failed.')
   }

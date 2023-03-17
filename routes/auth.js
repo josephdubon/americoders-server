@@ -1,18 +1,18 @@
 import express from 'express'
 
 // middleware
-import {requireSignIn} from '../middlewares'
+import { requireSignIn } from '../middlewares'
 
 // controllers
 import {
-    currentUser,
-    forgotPassword,
-    login,
-    logout,
-    register,
-    resetPassword,
-    sendTestEmail,
-    updateUser,
+  currentUser,
+  forgotPassword,
+  login,
+  logout,
+  register,
+  resetPassword,
+  sendTestEmail,
+  updateUser,
 } from '../controllers/auth'
 
 // add router

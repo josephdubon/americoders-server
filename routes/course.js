@@ -30,7 +30,7 @@ import {
   updateEvent,
   uploadImage,
   uploadVideo,
-  userCourses
+  userCourses,
 } from '../controllers/course'
 
 // add router
@@ -47,7 +47,12 @@ router.post('/course/upload-image', uploadImage)
 router.post('/course/remove-image', removeImage)
 
 // video routes
-router.post('/course/upload-video/:instructorId', requireSignIn, formidable(), uploadVideo)
+router.post(
+  '/course/upload-video/:instructorId',
+  requireSignIn,
+  formidable(),
+  uploadVideo,
+)
 router.post('/course/remove-video/:instructorId', requireSignIn, removeVideo)
 
 // course routes

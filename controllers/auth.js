@@ -22,22 +22,28 @@ export const register = async (req, res) => {
     // validation
     if (!firstName) return res.status(400).send('First name is required.')
     if (!password || password.length < 6) {
-      return res.status(400).
-        send(
-          'Password is required and minimum length of 6 characters is recommended.')
+      return res
+        .status(400)
+        .send(
+          'Password is required and minimum length of 6 characters is recommended.',
+        )
     }
 
     // check if email is already registered in system
     let userExists = await User.findOne({ email }).exec()
-    if (userExists) return res.status(400).
-      send('Email already exists in system.')
+    if (userExists)
+      return res.status(400).send('Email already exists in system.')
 
     // hash the password
     const hashedPassword = await hashPassword(password)
 
     // register user to db
     const user = new User({
-      firstName, lastName, bio, email, password: hashedPassword,
+      firstName,
+      lastName,
+      bio,
+      email,
+      password: hashedPassword,
     })
 
     // save user to db
@@ -45,12 +51,12 @@ export const register = async (req, res) => {
 
     // verify save success with message
     return res.json({ ok: true })
-
   } catch (err) {
     console.log(err)
     {
-      return res.status(400).
-        send('There was an error with your request. Please try again.')
+      return res
+        .status(400)
+        .send('There was an error with your request. Please try again.')
     }
   }
 }
@@ -105,30 +111,33 @@ export const logout = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
-
     // collect data/values
     const { firstName, lastName, bio, email } = req.body
 
     // get user
-    const user = await User.findOneAndUpdate({ email }, {
-      firstName: firstName,
-      lastName: lastName,
-      bio: bio,
-      email: email,
-    }).exec()
+    const user = await User.findOneAndUpdate(
+      { email },
+      {
+        firstName: firstName,
+        lastName: lastName,
+        bio: bio,
+        email: email,
+      },
+    ).exec()
 
     // save user to db
     await user.save()
 
     // verify save success with message
     return res.json({ ok: true })
-
   } catch (err) {
     console.log(err)
     {
-      return res.status(400).
-        send(
-          'There was an error with your request. Double check your email and try again.')
+      return res
+        .status(400)
+        .send(
+          'There was an error with your request. Double check your email and try again.',
+        )
     }
   }
 }
@@ -175,13 +184,14 @@ export const sendTestEmail = async (req, res) => {
 
   const emailSent = SES.sendEmail(params).promise()
 
-  emailSent.then((data) => {
-    console.log(data)
-    res.json({ ok: true })
-  }).catch((err) => {
-    console.log(err)
-  })
-
+  emailSent
+    .then((data) => {
+      console.log(data)
+      res.json({ ok: true })
+    })
+    .catch((err) => {
+      console.log(err)
+    })
 }
 
 export const forgotPassword = async (req, res) => {
@@ -223,11 +233,13 @@ export const forgotPassword = async (req, res) => {
     }
 
     const emailSent = SES.sendEmail(params).promise()
-    emailSent.then((data) => {
-      res.json({ ok: true })
-    }).catch((err) => {
-      console.log(err)
-    })
+    emailSent
+      .then((data) => {
+        res.json({ ok: true })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   } catch (err) {
     console.log(err)
   }
@@ -242,7 +254,8 @@ export const resetPassword = async (req, res) => {
     const hashedPassword = await hashPassword(newPassword)
 
     // get user
-    const user = User.findOneAndUpdate({
+    const user = User.findOneAndUpdate(
+      {
         // find by email and passwordResetCode
         email,
         passwordResetCode: code,
@@ -251,7 +264,8 @@ export const resetPassword = async (req, res) => {
       {
         password: hashedPassword,
         passwordResetCode: '',
-      }).exec()
+      },
+    ).exec()
 
     res.json({ ok: true })
   } catch (err) {
