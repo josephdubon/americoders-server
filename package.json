@@ -16,8 +16,8 @@
   "author": "Joseph Dubon",
   "license": "ISC",
   "dependencies": {
-    "@sendgrid/client": "^7.7.0",
-    "@sendgrid/mail": "^7.7.0",
+    "@sendgrid/client": "^8.1.6",
+    "@sendgrid/mail": "^8.1.6",
     "aws-sdk": "^2.1220.0",
     "bcrypt": "^5.0.1",
     "cookie-parser": "^1.4.6",
